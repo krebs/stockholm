@@ -6,18 +6,21 @@ set -efu
 case ${FZMENU_PHASE-0} in
   0)
     export FZMENU_PHASE=1
-    exec setsid -f urxvt -name fzmenu-urxvt -e dash "$0"
+    exec setsid -f terminal dash "$0"
     ;;
   1)
     if result=$(
+      PASSWORD_STORE_DIR=${PASSWORD_STORE_DIR-$HOME/.password-store}
       FZF_DEFAULT_OPTS=${FZMENU_FZF_DEFAULT_OPTS-}
       if test -n "$FZF_DEFAULT_OPTS"; then
         export FZF_DEFAULT_OPTS
       fi
-      pass git ls-files '*/otp.gpg' | \
-      sed '
-
-        s/\/otp\.gpg$//
+      find -L "$PASSWORD_STORE_DIR" -type f -name 'otp.gpg' |
+      awk -F / -v PASSWORD_STORE_DIR="$PASSWORD_STORE_DIR" '
+        { n = length(PASSWORD_STORE_DIR "/") }
+        $NF == "otp.gpg" {
+          print substr($0, 1 + n, length($0)-length("/otp.gpg")-n)
+        }
       ' |
       exec fzf \
           --history=/dev/null \

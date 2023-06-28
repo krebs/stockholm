@@ -74,9 +74,6 @@ with import ./lib;
     disko = {
       cgit.desc = "declarative partitioning and formatting tool";
     };
-    flameshot-once = {
-      cgit.desc = "flameshot runner that automatically starts/stops the daemon";
-    };
     fswm = {
       cgit.desc = "simple full screen window manager";
     };
@@ -98,6 +95,9 @@ with import ./lib;
     };
     nix-writers = {
       cgit.desc = "collection of package builders";
+    };
+    nixpkgs = {
+      cgit.desc = "Nix Packages collection";
     };
     pager = {
     };
@@ -139,6 +139,9 @@ with import ./lib;
     cgserver = {};
     crude-mail-setup = {};
     dot-xmonad = {};
+    flameshot-once = {
+      cgit.desc = "flameshot runner that automatically starts/stops the daemon";
+    };
     hirc = {};
     hstool = {
       cgit.desc = "Haskell Development Environment ^_^";

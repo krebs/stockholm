@@ -26,10 +26,7 @@ with import <stockholm/lib>;
                 Port = ${toString tinc.config.host.nets.${netname}.tinc.port}
                 ${tinc.config.extraConfig}
               '';
-              "tinc-up" = pkgs.writeDash "${netname}-tinc-up" ''
-                ${tinc.config.iproutePackage}/sbin/ip link set ${netname} up
-                ${tinc.config.tincUp}
-              '';
+              "tinc-up" = pkgs.writeDash "${netname}-tinc-up" tinc.config.tincUp;
             });
         };
 
@@ -60,7 +57,8 @@ with import <stockholm/lib>;
           default = let
             net = tinc.config.host.nets.${netname};
             iproute = tinc.config.iproutePackage;
-          in ''
+          in /* sh */ ''
+            ${tinc.config.iproutePackage}/sbin/ip link set ${netname} up
             ${optionalString (net.ip4 != null) /* sh */ ''
               ${iproute}/sbin/ip -4 addr add ${net.ip4.addr} dev ${netname}
               ${iproute}/sbin/ip -4 route add ${net.ip4.prefix} dev ${netname}
@@ -69,25 +67,19 @@ with import <stockholm/lib>;
               ${iproute}/sbin/ip -6 addr add ${net.ip6.addr} dev ${netname}
               ${iproute}/sbin/ip -6 route add ${net.ip6.prefix} dev ${netname}
             ''}
-            ${tinc.config.tincUpExtra}
           '';
-          defaultText = ''
-            ip -4 addr add ‹net.ip4.addr› dev ${netname}
-            ip -4 route add ‹net.ip4.prefix› dev ${netname}
-            ip -6 addr add ‹net.ip6.addr› dev ${netname}
-            ip -6 route add ‹net.ip6.prefix› dev ${netname}
-            ${tinc.config.tincUpExtra}
+          defaultText = /* sh */ ''
+            ip link set ‹netname› up
+            ip -4 addr add ‹net.ip4.addr› dev ‹netname›
+            ip -4 route add ‹net.ip4.prefix› dev ‹netname›
+            ip -6 addr add ‹net.ip6.addr› dev ‹netname›
+            ip -6 route add ‹net.ip6.prefix› dev ‹netname›
           '';
           description = ''
             tinc-up script to be used. Defaults to setting the
             krebs.host.nets.‹netname›.ip4 and ip6 for the new ips and
             configures forwarding of the respecitive netmask as subnet.
           '';
-        };
-
-        tincUpExtra = mkOption {
-          type = types.str;
-          default = "";
         };
 
         tincPackage = mkOption {
@@ -125,17 +117,13 @@ with import <stockholm/lib>;
 
         hostsPackage = mkOption {
           type = types.package;
-          default = pkgs.stdenv.mkDerivation {
-            name = "${tinc.config.netname}-tinc-hosts";
-            phases = [ "installPhase" ];
-            installPhase = ''
-              mkdir $out
-              ${concatStrings (mapAttrsToList (_: host: ''
-                echo ${shell.escape host.nets."${tinc.config.netname}".tinc.config} \
-                  > $out/${shell.escape host.name}
-              '') tinc.config.hosts)}
-            '';
-          };
+          default =
+            pkgs.write "${tinc.config.netname}-tinc-hosts"
+              (mapAttrs'
+                (_: host: nameValuePair "/${host.name}" {
+                  text = host.nets.${tinc.config.netname}.tinc.config;
+                })
+                tinc.config.hosts);
           defaultText = "‹netname›-tinc-hosts";
           description = ''
             Package of tinc host configuration files.  By default, a package will
@@ -202,35 +190,16 @@ with import <stockholm/lib>;
           default = 3;
         };
 
-        user = mkOption {
-          type = types.user;
-          default = {
-            name = tinc.config.netname;
-            home = "/var/lib/${tinc.config.user.name}";
-          };
-          defaultText = {
-            name = "‹netname›";
-            home = "/var/lib/‹netname›";
-          };
+        username = mkOption {
+          type = types.username;
+          default = tinc.config.netname;
+          defaultText = literalExample "netname";
         };
       };
     }));
   };
 
   config = {
-    users.users = mapAttrs' (netname: cfg:
-      nameValuePair "${netname}" {
-        inherit (cfg.user) home name uid;
-        createHome = true;
-        isSystemUser = true;
-        group = netname;
-      }
-    ) config.krebs.tinc;
-
-    users.groups = mapAttrs' (netname: cfg:
-      nameValuePair netname {}
-    ) config.krebs.tinc;
-
     krebs.systemd.services = mapAttrs (netname: cfg: {
       restartIfCredentialsChange = true;
     }) config.krebs.tinc;
@@ -250,11 +219,11 @@ with import <stockholm/lib>;
           )
           "rsa_key.priv:${cfg.privkey}"
         ];
-        ExecStartPre = pkgs.writers.writeDash "init-tinc-${netname}" ''
+        ExecStartPre = "+" + pkgs.writers.writeDash "init-tinc-${netname}" ''
           set -efu
           ${pkgs.coreutils}/bin/mkdir -p /etc/tinc
           ${pkgs.rsync}/bin/rsync -Lacv --delete \
-            --chown ${cfg.user.name} \
+            --chown ${cfg.username} \
             --chmod u=rwX,g=rX \
             --exclude='/*.priv' \
             ${cfg.confDir}/ /etc/tinc/${netname}/
@@ -267,14 +236,16 @@ with import <stockholm/lib>;
               "$CREDENTIALS_DIRECTORY"/rsa_key.priv \
               /etc/tinc/${netname}/
         '';
-        ExecStart = toString [
+        ExecStart = "+" + toString [
           "${cfg.tincPackage}/sbin/tincd"
           "-D"
-          "-U ${cfg.user.name}"
+          "-U ${cfg.username}"
           "-d 0"
           "-n ${netname}"
         ];
         SyslogIdentifier = netname;
+        DynamicUser = true;
+        User = cfg.username;
       };
     }) config.krebs.tinc;
   };

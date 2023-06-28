@@ -51,8 +51,94 @@ let
     };
   };
 
+  bing = {
+    pattern = "!bing (.*)$";
+    activate = "match";
+    arguments = [1];
+    timeoutSec = 1337;
+    command = {
+      filename = pkgs.writeDash "bing" ''
+        set -efu
+        report_error() {
+          printf '%s' "$*" |
+            curl -Ss http://p.r --data-binary @- |
+            tail -1 |
+            echo "error $(cat)"
+          exit 0
+        }
+        export PATH=${makeBinPath [
+          pkgs.coreutils
+          pkgs.curl
+          pkgs.jq
+        ]}
+        response=$(printf '%s' "$*" |
+          curl -SsG http://bing-gpt.r/api/chat --data-urlencode 'prompt@-'
+        )
+        if [ "$?" -ne 0 ]; then
+          report_error "$response"
+        else
+          if ! text=$(printf '%s' "$response" | jq -er '.item.messages[1].text'); then
+            echo "$_from: $(report_error "$response")"
+            exit 0
+          fi
+          # value seems to be 512 - overhead
+          echo "$_from: $text" | fold -s -w 426
+
+          printf '%s' "$response" |
+            jq -r '[.item.messages[1].sourceAttributions[].seeMoreUrl] | to_entries[] | "[\(.key + 1)]: \(.value)"'
+        fi
+      '';
+    };
+  };
+
+  bing-img = {
+    pattern = "!bing-img (.*)$";
+    activate = "match";
+    arguments = [1];
+    timeoutSec = 1337;
+    command = {
+      filename = pkgs.writeDash "bing-img" ''
+        set -efu
+        report_error() {
+          printf '%s' "$*" |
+            curl -Ss http://p.r --data-binary @- |
+            tail -1 |
+            echo "error $(cat)"
+          exit 0
+        }
+        export PATH=${makeBinPath [
+          pkgs.dash
+          pkgs.coreutils
+          pkgs.curl
+          pkgs.findutils
+          pkgs.jq
+        ]}
+        response=$(printf '%s' "$*" |
+          curl -SsG http://bing-gpt.r/api/images --data-urlencode 'prompt@-'
+        )
+        if [ "$?" -ne 0 ]; then
+          report_error "$response"
+        else
+          if ! text=$(
+            printf '%s' "$response" |
+              jq -er '.[].url'
+          ); then
+            echo "$_from: $(report_error "$response")"
+            exit 0
+          fi
+          echo "$text" |
+            xargs -I {} dash -c 'curl -Ss {} |
+              curl -Ss https://p.krebsco.de --data-binary @- |
+              tail -1' |
+            tr '\n' ' ' |
+            echo "$_from: $(cat)"
+        fi
+      '';
+    };
+  };
+
   confuse = {
-    pattern = "^!confuse (.*)$";
+    pattern = "!confuse (.*)$";
     activate = "match";
     arguments = [1];
     command = {
@@ -90,7 +176,7 @@ let
   };
 
   confuse_hackint = {
-    pattern = "^!confuse (.*)$";
+    pattern = "!confuse (.*)$";
     activate = "match";
     arguments = [1];
     command = {
@@ -322,6 +408,8 @@ let
         }
         bedger-add
         bedger-balance
+        bing
+        bing-img
         hooks.sed
         interrogate
         say

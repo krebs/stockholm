@@ -39,10 +39,13 @@ let
   };
 
   imp = {
+    users.groups.konsens.gid = genid "konsens";
     users.users.konsens = rec {
       name = "konsens";
+      group = "konsens";
       uid = genid name;
       home = "/var/lib/konsens";
+      isSystemUser = true;
       createHome = true;
     };
 
@@ -57,12 +60,17 @@ let
     systemd.services = mapAttrs' (name: repo:
       nameValuePair "konsens-${name}" {
         after = [ "network.target" ];
-        path = [ pkgs.git ];
+        path = [
+          pkgs.git
+          pkgs.openssh
+        ];
         restartIfChanged = false;
         serviceConfig = {
           Type = "simple";
           PermissionsStartOnly = true;
           ExecStart = pkgs.writeDash "konsens-${name}" ''
+            set -efu
+            git config --global --replace-all safe.directory *
             if ! test -e ${name}; then
               git clone ${repo.url} ${name}
             fi

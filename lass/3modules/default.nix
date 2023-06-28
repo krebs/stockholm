@@ -12,9 +12,6 @@ _:
     ./pyload.nix
     ./screenlock.nix
     ./usershadow.nix
-    ./xjail.nix
     ./autowifi.nix
-    ./browsers.nix
-    ./sync-containers3.nix
   ];
 }

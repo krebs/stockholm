@@ -27,7 +27,7 @@ with import <stockholm/lib>;
 
   krebs.build.host = config.krebs.hosts.green;
 
-  lass.sync-containers3.inContainer = {
+  krebs.sync-containers3.inContainer = {
     enable = true;
     pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFlUMf943qEQG64ob81p6dgoHq4jUjq7tSvmSdEOEU2y";
   };
@@ -35,6 +35,7 @@ with import <stockholm/lib>;
   systemd.tmpfiles.rules = [
     "d /home/lass/.local/share 0700 lass users -"
     "d /home/lass/.local 0700 lass users -"
+    "d /home/lass/.config 0700 lass users -"
 
     "d /var/state/lass_mail 0700 lass users -"
     "L+ /home/lass/Maildir - - - - ../../var/state/lass_mail"

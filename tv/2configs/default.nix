@@ -6,6 +6,7 @@ with import ./lib;
 
   krebs.build.user = config.krebs.users.tv;
 
+  networking.hostId = mkDefault (hashToLength 8 config.networking.hostName);
   networking.hostName = config.krebs.build.host.name;
 
   imports = [
@@ -16,6 +17,7 @@ with import ./lib;
     ./nets/hkw.nix
     ./networkd.nix
     ./nginx
+    ./nix.nix
     ./pki
     ./ssh.nix
     ./sshd.nix
@@ -45,20 +47,11 @@ with import ./lib;
     }
 
     {
-      nix.extraOptions = ''
-        auto-optimise-store = true
-      '';
-
-      # TODO check if both are required:
-      nix.settings.extra-sandbox-paths = [
-        "/etc/protocols"
-        pkgs.iana-etc.outPath
-      ];
-    }
-    {
       nixpkgs.config.allowUnfree = false;
     }
     {
+      environment.homeBinInPath = true;
+
       environment.profileRelativeEnvVars.PATH = mkForce [ "/bin" ];
 
       environment.systemPackages = with pkgs; [
@@ -137,4 +130,11 @@ with import ./lib;
       ];
     }
   ];
+
+  nixpkgs.overlays =
+    mkAfter (optional config.hardware.video.hidpi.enable (self: super: {
+      alacritty-tv = super.alacritty-tv.override {
+        variant = "hidpi";
+      };
+    }));
 }

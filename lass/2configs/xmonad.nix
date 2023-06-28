@@ -53,6 +53,7 @@ import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.Run (safeSpawn)
 import XMonad.Util.Ungrab (unGrab)
+import XMonad.Util.Paste (pasteSelection)
 
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
 
@@ -105,11 +106,9 @@ floatHooks = composeAll
 
 myKeyMap :: [([Char], X ())]
 myKeyMap =
-    [ ("M4-C-p", forkFile "${pkgs.scrot}/bin/scrot" [ "~/public_html/scrot.png" ] Nothing )
-    , ("M4-p", forkFile "${pkgs.pass}/bin/passmenu" [ "--type" ] Nothing)
+    [ ("M4-p", forkFile "${pkgs.pass}/bin/passmenu" [ "--type" ] Nothing)
     , ("M4-S-p", forkFile "${pkgs.otpmenu}/bin/otpmenu" [] Nothing)
-    , ("M4-o", forkFile "${pkgs.brain}/bin/brainmenu --type" [] Nothing)
-    , ("M4-z", forkFile "${pkgs.emot-menu}/bin/emoticons" [] Nothing)
+    , ("M4-z", forkFile "${pkgs.unimenu}/bin/unimenu" [] Nothing)
 
     , ("M4-S-q", restart "xmonad" True)
 
@@ -160,14 +159,14 @@ myKeyMap =
       ${pkgs.clipmenu}/bin/clipmenu
     ''}")
 
-    , ("M4-<F2>", windows copyToAll)
-
-    , ("M4-<F4>", spawn "${pkgs.nm-dmenu}/bin/nm-dmenu")
     , ("M4-<Insert>", spawn "${pkgs.writeDash "paste" ''
       ${pkgs.coreutils}/bin/sleep 0.4
       ${pkgs.xclip}/bin/xclip -o | ${pkgs.xdotool}/bin/xdotool type -f -
     ''}")
 
+    , ("M4-<F1>", spawn "/run/current-system/sw/bin/gamepad_mouse_toggle")
+    , ("M4-<F2>", windows copyToAll)
+    , ("M4-<F4>", spawn "${pkgs.nm-dmenu}/bin/nm-dmenu")
     , ("M4-<F5>", spawn "${pkgs.acpilight}/bin/xbacklight -set 1")
     , ("M4-<F6>", spawn "${pkgs.acpilight}/bin/xbacklight -set 10")
     , ("M4-<F7>", spawn "${pkgs.acpilight}/bin/xbacklight -set 33")
@@ -177,13 +176,13 @@ myKeyMap =
     , ("M4-<F10>", spawn "${pkgs.redshift}/bin/redshift -x")
 
     , ("M4-<F11>", spawn "${config.lass.screenlock.command}")
-    , ("M4-<F12>", spawn "${pkgs.systemd}/bin/systemctl suspend -i")
 
     , ("M4-u", spawn "${pkgs.xcalib}/bin/xcalib -invert -alter")
     , ("M4-y", spawn "/run/current-system/sw/bin/switch-theme toggle")
 
-    , ("M4-s", spawn "${pkgs.knav}/bin/knav")
+    ${lib.optionalString (builtins.hasAttr "warpd" pkgs) '', ("M4-s", spawn "${pkgs.warpd}/bin/warpd --hint")''}
     , ("M4-i", spawn "/run/current-system/sw/bin/screenshot")
+    , ("S-<F12>", pasteSelection)
 
     --, ("M4-w", screenWorkspace 0 >>= (windows . W.greedyView))
     --, ("M4-e", screenWorkspace 1 >>= (windows . W.greedyView))
