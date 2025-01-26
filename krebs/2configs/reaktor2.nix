@@ -410,7 +410,6 @@ let
         bedger-balance
         bing
         bing-img
-        hooks.sed
         interrogate
         say
         (generators.command_hook {
