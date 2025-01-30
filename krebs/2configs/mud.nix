@@ -5,18 +5,6 @@
     MUD_SERVER=''${MUD_SERVER:-127.0.0.1}
     MUD_PORT=''${MUD_PORT:-8080}
 
-    if $(${pkgs.libressl.nc}/bin/nc -z "$MUD_SERVER" "$MUD_PORT"); then
-      ${nvim}/bin/nvim \
-        +"let g:instant_username = \"$MUD_NICKNAME\"" \
-        +":InstantJoinSession $MUD_SERVER $MUD_PORT" \
-        "$@"
-    else
-      ${nvim}/bin/nvim \
-        +"let g:instant_username = \"$MUD_NICKNAME\"" \
-        +":InstantStartServer $MUD_SERVER $MUD_PORT" \
-        +":InstantStartSession $MUD_SERVER $MUD_PORT" \
-        "$@"
-    fi
   '';
   nvim = pkgs.neovim.override {
     # vimAlias = true;
@@ -31,7 +19,6 @@
           nerdtree # file structure inside nvim
           rainbow # Color parenthesis
           customPlugins.hack-color
-          customPlugins.instant
         ];
         opt = [];
       };
@@ -97,15 +84,6 @@
     inoremap <f2> <esc>:tabn<cr>
   '';
   customPlugins = {
-    instant = pkgs.vimUtils.buildVimPlugin {
-      name = "instant";
-      src = pkgs.fetchFromGitHub {
-        owner = "jbyuki";
-        repo = "instant.nvim";
-        rev = "c02d72267b12130609b7ad39b76cf7f4a3bc9554";
-        sha256 = "sha256-7Pr2Au/oGKp5kMXuLsQY4BK5Wny9L1EBdXtyS5EaZPI=";
-      };
-    };
     hack-color = (rtp: rtp // { inherit rtp; }) (pkgs.writeTextFile (let
       name = "hack";
     in {
@@ -162,10 +140,6 @@ in {
     ];
     packages = with pkgs; [
       tmux
-      (pkgs.writers.writeDashBin "instant_server" ''
-        find ${customPlugins.instant}
-        find ${customPlugins.instant.src}
-      '')
       mud
     ];
   };
