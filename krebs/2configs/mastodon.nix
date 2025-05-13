@@ -26,7 +26,7 @@
   ];
 
   environment.systemPackages = [
-    (pkgs.writers.writeDashBin "clear-mastodon-cache" ''
+    (pkgs.writers.writeDashBin "mastodon-clear-cache" ''
       mastodon-tootctl media remove --prune-profiles --days=14 --concurrency=30
       mastodon-tootctl media remove-orphans
       mastodon-tootctl preview_cards remove --days=14
