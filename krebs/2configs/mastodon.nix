@@ -26,10 +26,13 @@
   ];
 
   environment.systemPackages = [
-    (pkgs.writers.writeDashBin "clear-mastodon-cache" ''
+    (pkgs.writers.writeDashBin "mastodon-clear-cache" ''
       mastodon-tootctl media remove --prune-profiles --days=14 --concurrency=30
       mastodon-tootctl media remove-orphans
       mastodon-tootctl preview_cards remove --days=14
+      mastodon-tootctl accounts prune
+      mastodon-tootctl statuses remove --days 4
+      mastodon-tootctl media remove --days 4
     '')
     (pkgs.writers.writeDashBin "create-mastodon-user" ''
       set -efu
