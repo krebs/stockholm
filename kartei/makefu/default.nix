@@ -211,6 +211,7 @@ in {
           atuin.euer        IN A      ${nets.internet.ip4.addr}
           board.euer        IN A      ${nets.internet.ip4.addr}
           bookmark.euer     IN A      ${nets.internet.ip4.addr}
+          book.euer         IN A      ${nets.internet.ip4.addr}
           boot              IN A      ${nets.internet.ip4.addr}
           boot.euer         IN A      ${nets.internet.ip4.addr}
           build.euer        IN A      ${nets.internet.ip4.addr}
