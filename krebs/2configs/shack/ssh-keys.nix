@@ -2,6 +2,7 @@
 {
   users.users.root.openssh.authorizedKeys.keys = [
     config.krebs.users."0x4A6F".pubkey
+    config.krebs.users.susanne.pubkey
     config.krebs.users.hase.pubkey
     config.krebs.users.neos.pubkey
     config.krebs.users.raute.pubkey

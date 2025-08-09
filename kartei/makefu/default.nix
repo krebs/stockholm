@@ -205,11 +205,13 @@ in {
     gum = rec {
       extraZones = {
         "krebsco.de" = ''
+          abook.euer        IN A      ${nets.internet.ip4.addr}
           admin.work.euer   IN A      ${nets.internet.ip4.addr}
           api.work.euer     IN A      ${nets.internet.ip4.addr}
           atuin.euer        IN A      ${nets.internet.ip4.addr}
           board.euer        IN A      ${nets.internet.ip4.addr}
           bookmark.euer     IN A      ${nets.internet.ip4.addr}
+          book.euer         IN A      ${nets.internet.ip4.addr}
           boot              IN A      ${nets.internet.ip4.addr}
           boot.euer         IN A      ${nets.internet.ip4.addr}
           build.euer        IN A      ${nets.internet.ip4.addr}
@@ -241,12 +243,14 @@ in {
           play.work.euer    IN A      ${nets.internet.ip4.addr}
           push.work.euer    IN A      ${nets.internet.ip4.addr}
           rss.euer          IN A      ${nets.internet.ip4.addr}
+          mdrss.euer        IN A      ${nets.internet.ip4.addr}
           share.euer        IN A      ${nets.internet.ip4.addr}
           ul.work.euer      IN A      ${nets.internet.ip4.addr}
           wg.euer           IN A      ${nets.internet.ip4.addr}
           wiki.euer         IN A      ${nets.internet.ip4.addr}
           wikisearch        IN A      ${nets.internet.ip4.addr}
           work.euer         IN A      ${nets.internet.ip4.addr}
+          shop.euer         IN A      ${nets.internet.ip4.addr}
 
           mediengewitter    IN CNAME  over.dose.io.
           nixos.unstable    IN CNAME  krebscode.github.io.
@@ -370,6 +374,10 @@ in {
       pubkey = pub-for "makefu.x";
       pgp.pubkeys.default = builtins.readFile ./pgp/default.asc;
       pgp.pubkeys.brain = builtins.readFile ./pgp/brain.asc;
+    };
+    susanne = {
+      mail = "susanne@shackspace.de";
+      pubkey = pub-for "susanne";
     };
     makefu-omo = {
       inherit (makefu) mail pgp;

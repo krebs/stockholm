@@ -11,7 +11,7 @@
     # brain hosts/puyak/root
     ../../2configs/hw/getty-for-esp.nix
 
-    ../../2configs/buildbot/worker.nix
+    # ../../2configs/buildbot/worker.nix
 
     ## initrd unlocking
     # (brain hosts/puyak/luks-ssd;echo)  | ssh root@$(brain krebs-secrets/puyak/initrd/hostname) 'cat  /crypt-ramfs/passphrase'
@@ -67,7 +67,7 @@
     }
 
     # create samba share for anonymous usage with the laser and 3d printer pc
-    ../../2configs/shack/share.nix
+    # ../../2configs/shack/share.nix
 
     # mobile.lounge.mpd.shack
     ../../2configs/shack/mobile.mpd.nix
@@ -157,7 +157,6 @@
 
   services.logind.lidSwitch = "ignore";
   services.logind.lidSwitchExternalPower = "ignore";
-
 
 
   environment.systemPackages = [ pkgs.zsh ];

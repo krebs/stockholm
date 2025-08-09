@@ -6,6 +6,7 @@ let
 in {
   options.krebs.brockman = {
     enable = mkEnableOption "brockman";
+    package = mkPackageOption pkgs "brockman" { };
     config = mkOption { type = types.attrs; }; # TODO make real config here
   };
 
@@ -26,7 +27,7 @@ in {
       serviceConfig = {
         Restart = "always";
         ExecStart = ''
-          ${pkgs.brockman}/bin/brockman ${pkgs.writeText "brockman.json" (builtins.toJSON cfg.config)}
+          ${cfg.package}/bin/brockman ${pkgs.writeText "brockman.json" (builtins.toJSON cfg.config)}
         '';
         User = config.users.extraUsers.brockman.name;
         PrivateTmp = true;
