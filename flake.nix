@@ -42,6 +42,10 @@
       users = self.nixosConfigurations.hotdog.config.krebs.users;
     };
     overlays.default = import ./krebs/5pkgs/default.nix;
+    packages = let
+      packageNames = self.lib.attrNames (self.lib.mapNixDir (x: null) ./krebs/5pkgs/simple);
+      appliedOverlay = (system: self.overlays.default {} (self.inputs.nixpkgs.legacyPackages.${system} // { lib = self.lib; }));
+    in nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ] (system: self.lib.getAttrs packageNames (appliedOverlay system));
     lib = import (self.outPath + "/lib/pure.nix") { lib = nixpkgs.lib; };
   };
 }
