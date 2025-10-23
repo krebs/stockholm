@@ -1,4 +1,14 @@
 { config, lib, pkgs, ... }:
+let
+  mastodon-clear-cache = pkgs.writers.writeDashBin "mastodon-clear-cache" ''
+    /run/current-system/sw/bin/mastodon-tootctl media remove --prune-profiles --days=14 --concurrency=30
+    /run/current-system/sw/bin/mastodon-tootctl media remove-orphans
+    /run/current-system/sw/bin/mastodon-tootctl preview_cards remove --days=14
+    /run/current-system/sw/bin/mastodon-tootctl accounts prune
+    /run/current-system/sw/bin/mastodon-tootctl statuses remove --days 4
+    /run/current-system/sw/bin/mastodon-tootctl media remove --days 4
+  '';
+in
 {
   services.postgresql = {
     enable = true;
@@ -25,12 +35,20 @@
     443
   ];
 
+  systemd.services.mastodon-clear-cache = {
+    description = "Mastodon Clear Cache";
+    wantedBy = [ "timers.target" ];
+    startAt = "daily";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${mastodon-clear-cache}/bin/mastodon-clear-cache";
+      User = "mastodon";
+      WorkingDirectory = "/var/lib/mastodon";
+    };
+  };
+
   environment.systemPackages = [
-    (pkgs.writers.writeDashBin "clear-mastodon-cache" ''
-      mastodon-tootctl media remove --prune-profiles --days=14 --concurrency=30
-      mastodon-tootctl media remove-orphans
-      mastodon-tootctl preview_cards remove --days=14
-    '')
+    mastodon-clear-cache
     (pkgs.writers.writeDashBin "create-mastodon-user" ''
       set -efu
       nick=$1

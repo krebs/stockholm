@@ -3,6 +3,8 @@
 with python3Packages; buildPythonPackage rec {
   name = "repo-sync-${version}";
   version = "0.2.7";
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
   propagatedBuildInputs = [
     docopt
     GitPython

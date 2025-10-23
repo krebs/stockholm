@@ -26,21 +26,17 @@
         "guest ok" = "yes";
       };
     };
-    extraConfig = ''
-      guest account = smbguest
-      map to guest = bad user
-      # disable printing
-      load printers = no
-      printing = bsd
-      printcap name = /dev/null
-      disable spoolss = yes
-
-      # for legacy systems
-      client min protocol = NT1
-      server min protocol = NT1
-      workgroup = WORKGROUP
-      server string = ${config.networking.hostName}
-      netbios name = ${config.networking.hostName}
-    '';
+    settings.global = {
+          "guest account" = "smbguest";
+          "map to guest" = "bad user";
+          # disable printing
+          "load printers" = "no";
+          "printing" = "bsd";
+          "printcap name" = "/dev/null";
+          "disable spoolss" = "yes";
+          "workgroup" = "WORKGROUP";
+          "server string" = config.networking.hostName;
+          "netbios name" = config.networking.hostName;
+        };
   };
 }

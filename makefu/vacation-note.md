@@ -2,8 +2,8 @@ From 2015-07-28 until 2023-07-28 here lived the configuration of makefu.
 
 # New Location
 All configutation can now be found at [Github: makefu/nixos-config](
-https://github.com/makefu/nixos-config ) or [cgit: nixos-config](
-https://cgit.euer.krebsco.de/nixos-config ) respectively.
+https://github.com/makefu/nixos-config ) and [forgejo: nixos-config](
+https://cgit.euer.krebsco.de/makefu/nixos-config ) respectively.
 
 # Background
 With nix flakes it became possible to finally split the configuration up
