@@ -251,6 +251,8 @@ in {
           wikisearch        IN A      ${nets.internet.ip4.addr}
           work.euer         IN A      ${nets.internet.ip4.addr}
           shop.euer         IN A      ${nets.internet.ip4.addr}
+          matrix.euer       IN A      ${nets.internet.ip4.addr}
+          element.euer      IN A      ${nets.internet.ip4.addr}
 
           mediengewitter    IN CNAME  over.dose.io.
           nixos.unstable    IN CNAME  krebscode.github.io.
