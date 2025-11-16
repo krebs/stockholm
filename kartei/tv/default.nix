@@ -1,9 +1,8 @@
-{ config, lib, ... }@attrs: let
+{ config, lib, ... }: let
   inherit (builtins)
-    getAttr head mapAttrs match pathExists readDir readFile typeOf;
+    getAttr mapAttrs pathExists readDir readFile typeOf;
   inherit (lib)
-    const hasAttrByPath mapAttrs' mkDefault mkIf optionalAttrs removeSuffix
-    toList;
+    const hasAttrByPath mapAttrs' mkDefault optionalAttrs removeSuffix;
   slib = import ../../lib/pure.nix { inherit lib; };
 in {
   dns.providers = {
@@ -11,13 +10,7 @@ in {
   };
   hosts =
     mapAttrs
-      (hostName: hostFile: let
-        hostSource = import hostFile;
-        hostConfig = getAttr (typeOf hostSource) {
-          lambda = hostSource attrs;
-          set = hostSource;
-        };
-      in slib.evalSubmodule slib.types.host [
+      (hostName: hostConfig: builtins.foldl' lib.recursiveUpdate {} [
         hostConfig
         {
           name = hostName;
@@ -41,17 +34,19 @@ in {
             wireguard.pubkey = readFile pubkey-path;
           };
         })
-        (host: mkIf (host.config.ssh.pubkey != null) {
-          ssh.privkey = mapAttrs (const mkDefault) {
-            path = "${config.krebs.secret.directory}/ssh.id_${host.config.ssh.privkey.type}";
-            type = head (toList (builtins.match "ssh-([^ ]+) .*" host.config.ssh.pubkey));
+        (lib.optionalAttrs (hostConfig.ssh.pubkey or null != null) {
+          ssh.privkey = builtins.mapAttrs (const mkDefault) rec {
+            path = "${config.krebs.secret.directory}/ssh.id_${type}";
+            type = builtins.head (lib.toList (builtins.match "ssh-([^ ]+) .*" hostConfig.ssh.pubkey));
           };
         })
       ])
       (mapAttrs'
         (name: type: {
           name = removeSuffix ".nix" name;
-          value = ./hosts + "/${name}";
+          value = lib.toFunction (import (./hosts + "/${name}")) {
+            inherit config lib;
+          };
         })
         (readDir ./hosts));
   sitemap = {
