@@ -1,6 +1,4 @@
-{ config, lib, ... }: let
-  slib = import ../../../lib/pure.nix { inherit lib; };
-in {
+{ config, lib, slib, ... }: {
   extraZones = {
     "krebsco.de" = ''
       ni          60 IN A ${config.krebs.hosts.ni.nets.internet.ip4.addr}

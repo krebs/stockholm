@@ -45,7 +45,7 @@ in {
         (name: type: {
           name = removeSuffix ".nix" name;
           value = lib.toFunction (import (./hosts + "/${name}")) {
-            inherit config lib;
+            inherit config lib slib;
           };
         })
         (readDir ./hosts));
