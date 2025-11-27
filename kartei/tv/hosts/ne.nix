@@ -3,6 +3,7 @@
     "krebsco.de" = ''
       ne 60 IN A ${config.krebs.hosts.ne.nets.internet.ip4.addr}
       ne 60 IN AAAA ${config.krebs.hosts.ne.nets.internet.ip6.addr}
+      tv 300 IN NS ne
     '';
   };
   nets = {
