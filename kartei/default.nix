@@ -3,12 +3,12 @@
     # TODO don't remove during CI
     lib.flip builtins.removeAttrs ["template"];
 in {
-  config =
-    lib.mkMerge
+  imports =
       (lib.mapAttrsToList
         (name: _type: let
           path = ./. + "/${name}";
         in {
+          _file = toString path;
           krebs = import path arg;
         })
         (removeTemplate
