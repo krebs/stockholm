@@ -4,19 +4,23 @@
   inherit (lib)
     const hasAttrByPath mapAttrs' mkDefault optionalAttrs removeSuffix;
   slib = import ../../lib/pure.nix { inherit lib; };
+
+  extend = x: f: {
+    lambda = lib.recursiveUpdate x (f x);
+    set = lib.recursiveUpdate x f;
+  }.${builtins.typeOf f};
 in {
   dns.providers = {
     "viljetic.de" = "regfish";
   };
   hosts =
     mapAttrs
-      (hostName: hostConfig: builtins.foldl' lib.recursiveUpdate {} [
-        hostConfig
+      (hostName: lib.flip (builtins.foldl' extend) [
         {
           name = hostName;
           owner = config.krebs.users.tv;
         }
-        (optionalAttrs (hasAttrByPath ["nets" "retiolum"] hostConfig) {
+        (hostConfig: optionalAttrs (hasAttrByPath ["nets" "retiolum"] hostConfig) {
           nets.retiolum = {
             ip6.addr =
               (slib.krebs.genipv6 "retiolum" "tv" { inherit hostName; }).address;
@@ -34,7 +38,7 @@ in {
             wireguard.pubkey = readFile pubkey-path;
           };
         })
-        (lib.optionalAttrs (hostConfig.ssh.pubkey or null != null) {
+        (hostConfig: lib.optionalAttrs (hostConfig.ssh.pubkey or null != null) {
           ssh.privkey = builtins.mapAttrs (const mkDefault) rec {
             path = "${config.krebs.secret.directory}/ssh.id_${type}";
             type = builtins.head (lib.toList (builtins.match "ssh-([^ ]+) .*" hostConfig.ssh.pubkey));
