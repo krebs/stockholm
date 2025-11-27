@@ -16,13 +16,12 @@
   };
   nets = {
     internet = {
-      ip4 = rec {
+      ip4 = {
         addr = "185.162.251.237";
-        prefix = "${addr}/32";
       };
-      ip6 = rec {
+      ip6 = {
         addr = "2a03:4000:1a:cf::1";
-        prefix = "${addr}/64";
+        prefixLength = 64;
       };
       aliases = [
         "ni.i"
