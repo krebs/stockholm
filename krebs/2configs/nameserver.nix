@@ -66,6 +66,10 @@ in {
         - id: hostingde_ns1
           address: 134.0.30.178
 
+        - id: krebscode_ne
+          address: ${config.krebs.hosts.ne.nets.internet.ip4.addr}
+          key: krebs_transfer_notify_key
+
         - id: krebscode_ni
           address: ${config.krebs.hosts.ni.nets.internet.ip4.addr}
           key: krebs_transfer_notify_key
@@ -119,6 +123,7 @@ in {
           dnssec-policy: rsa2k
           notify: henet_ns1
           notify: hostingde_ns1
+          notify: krebscode_ne
           notify: krebscode_ni
           acl: transfer_to_henet_secondary
           acl: transfer_to_hostingde_secondary
