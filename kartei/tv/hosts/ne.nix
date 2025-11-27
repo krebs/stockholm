@@ -12,13 +12,11 @@
       aliases = [
         "ne.i"
       ];
-      ip4 = rec {
+      ip4 = {
         addr = "159.195.31.38";
-        prefix = "${addr}/32";
       };
-      ip6 = rec {
+      ip6 = {
         addr = "2a0a:4cc0:c1:5eb0::1";
-        prefix = "${addr}/64";
         prefixLength = 64;
       };
       ssh.port = 11423;
