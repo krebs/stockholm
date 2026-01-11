@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  slib = import ../../lib/pure.nix { inherit lib; };
+  slib = lib.slib or (import ../../lib/pure.nix { inherit lib; });
   cfg = config.krebs.airdcpp;
 
   out = {

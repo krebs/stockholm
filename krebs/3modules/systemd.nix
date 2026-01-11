@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: let {
 
-  slib = import ../../lib/pure.nix { inherit lib; };
+  slib = lib.slib or (import ../../lib/pure.nix { inherit lib; });
 
   body.options.krebs.systemd.services = lib.mkOption {
     default = {};

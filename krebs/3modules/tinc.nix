@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }:
-with import ../../lib/pure.nix { inherit lib; }; {
+with lib.slib or (import ../../lib/pure.nix { inherit lib; }); {
   options.krebs.tinc = mkOption {
     default = {};
     description = ''
@@ -91,7 +91,7 @@ with import ../../lib/pure.nix { inherit lib; }; {
         hosts = mkOption {
           type = with types; attrsOf host;
           default =
-            filterAttrs (_: h: hasAttr tinc.config.netname h.nets) config.krebs.hosts;
+            filterAttrs (_: h: hasAttr tinc.config.netname h.nets && h.nets.${tinc.config.netname}.tinc.config or null != null) config.krebs.hosts;
           defaultText = "‹all-hosts-of-‹netname››";
           description = ''
             Hosts to generate <literal>config.krebs.tinc.retiolum.hostsPackage</literal>.

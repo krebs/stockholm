@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ircaids, ... }:
 
 pkgs.writers.writeDashBin "irc-announce" ''
   set -euf
@@ -15,7 +15,7 @@ pkgs.writers.writeDashBin "irc-announce" ''
   fi
 
   printf %s "$message" |
-  ${pkgs.ircaids}/bin/ircsink \
+  ${ircaids}/bin/ircsink \
       --nick="$IRC_NICK" \
       --port="$IRC_PORT" \
       --server="$IRC_SERVER" \

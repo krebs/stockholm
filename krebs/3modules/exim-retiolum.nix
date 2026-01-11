@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }:
-with import ../../lib/pure.nix { inherit lib; }; let
+with lib.slib or (import ../../lib/pure.nix { inherit lib; }); let
   cfg = config.krebs.exim-retiolum;
 
   # Due to improvements to the JSON notation, braces around top-level objects

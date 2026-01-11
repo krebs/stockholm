@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: let
-  slib = import ../../lib/pure.nix { inherit lib; };
+  slib = lib.slib or (import ../../lib/pure.nix { inherit lib; });
 in {
   options.krebs.users = lib.mkOption {
     type = lib.types.attrsOf slib.types.user;

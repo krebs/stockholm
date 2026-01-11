@@ -1,5 +1,7 @@
-{ pkgs, stockholm, ... }:
-
+{ pkgs, lib, ... }:
+let
+  stockholm.lib = import ../../../../lib/pure.nix { inherit lib; };
+in
 with stockholm.lib;
 
 {

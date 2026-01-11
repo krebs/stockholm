@@ -8,7 +8,10 @@ with stockholm.lib;
 
 fix (foldl' (flip extends) (self: super) (
   [
-    (self: super: { inherit stockholm; })
+    (self: super: {
+      inherit stockholm;
+      inherit (super.writers) writeBash writeBashBin writeDash writeDashBin writeJSON;
+    })
   ]
   ++
   (map

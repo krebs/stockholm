@@ -3,6 +3,8 @@
 python3Packages.buildPythonPackage rec {
   pname = "dnsstamps";
   version = "1.3.0";
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
 
   src = python3Packages.fetchPypi {
     inherit pname version;

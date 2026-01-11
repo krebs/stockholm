@@ -1,7 +1,7 @@
-{ jq, stockholm, systemd, writeDashBin }:
+{ jq, lib, systemd, writeDashBin }:
 
 let
-  lib = stockholm.lib;
+  stockholm.lib = import ../../../lib/pure.nix { inherit lib; };
   user = "exim"; # TODO make this configurable
 in
 
@@ -10,7 +10,7 @@ in
 
 writeDashBin "eximlog" ''
   ${systemd}/bin/journalctl \
-      -u ${lib.shell.escape user} \
+      -u ${stockholm.lib.shell.escape user} \
       -o short-unix \
       "$@" \
     |

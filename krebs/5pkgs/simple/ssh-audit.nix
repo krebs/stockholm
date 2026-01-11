@@ -4,6 +4,8 @@ python3Packages.buildPythonPackage rec {
   inherit (meta) version;
 
   pname = "ssh-audit";
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
 
   src = fetchFromGitHub {
     owner = "arthepsy";

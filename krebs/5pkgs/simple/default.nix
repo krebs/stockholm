@@ -3,8 +3,9 @@ self: super:
 let
   # This callPackage will try to detect obsolete overrides.
   lib = super.stockholm.lib;
+  callPackage' = lib.callPackageWith self;
   callPackage = path: args: let
-    override = self.callPackage path args;
+    override = callPackage' path args;
     upstream = lib.optionalAttrs (override ? "name")
       (super.${(lib.parseDrvName override.name).name} or {});
   in if upstream ? "name" &&

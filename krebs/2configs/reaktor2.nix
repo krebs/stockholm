@@ -293,7 +293,7 @@ let
         {
           activate = "always";
           command = {
-            filename = ../5pkgs/simple/Reaktor/scripts/tell-on_join.sh;
+            filename = ../5pkgs/simple/reaktor2-plugins/scripts/tell-on_join.sh;
             env = {
               PATH = makeBinPath [
                 pkgs.coreutils # XXX env, touch
@@ -415,7 +415,7 @@ let
         (generators.command_hook {
           inherit (commands) dance random-emoji nixos-version;
           tell = {
-            filename = ../5pkgs/simple/Reaktor/scripts/tell-on_privmsg.sh;
+            filename = ../5pkgs/simple/reaktor2-plugins/scripts/tell-on_privmsg.sh;
             env = {
               PATH = makeBinPath [
                 pkgs.coreutils # XXX date, env

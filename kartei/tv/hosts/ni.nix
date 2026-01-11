@@ -1,6 +1,4 @@
-{ config, lib, ... }: let
-  slib = import ../../../lib/pure.nix { inherit lib; };
-in {
+{ config, lib, slib, ... }: {
   extraZones = {
     "krebsco.de" = ''
       ni          60 IN A ${config.krebs.hosts.ni.nets.internet.ip4.addr}
@@ -18,13 +16,12 @@ in {
   };
   nets = {
     internet = {
-      ip4 = rec {
+      ip4 = {
         addr = "185.162.251.237";
-        prefix = "${addr}/32";
       };
-      ip6 = rec {
+      ip6 = {
         addr = "2a03:4000:1a:cf::1";
-        prefix = "${addr}/64";
+        prefixLength = 64;
       };
       aliases = [
         "ni.i"
