@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, writeDash }:
 
 /* gitignore - Filter for intentionally untracked lines or blocks of code
 
@@ -34,13 +34,9 @@ Installation:
   [2]: For more information about assigning filters see gitattributes(5).
 */
 
-pkgs.execBin "gitignore" {
-  filename = "${pkgs.gnused}/bin/sed";
-  argv = [
-    "gitignore"
-    /* sed */ ''
-      /#gitignore-begin/,/#gitignore-end/d
-      /#gitignore/d
-    ''
-  ];
-}
+writeDash "gitignore" ''
+  exec ${pkgs.gnused}/bin/sed '
+    /#gitignore-begin/,/#gitignore-end/d
+    /#gitignore/d
+  '
+''

@@ -15,7 +15,7 @@ with stockholm.lib;
   commands = {
 
     random-emoji = {
-      filename = stockholm.outPath + "/krebs/5pkgs/simple/Reaktor/scripts/random-emoji.sh";
+      filename = ./scripts/random-emoji.sh;
       env = {
         PATH = makeBinPath (with pkgs; [ coreutils gnused gnugrep xmlstarlet wget ]);
       };
@@ -35,7 +35,7 @@ with stockholm.lib;
     };
 
     stockholm-issue = {
-      filename = stockholm.outPath + "/krebs/5pkgs/simple/Reaktor/scripts/random-issue.sh";
+      filename = ./scripts/random-issue.sh;
       env = {
         PATH = makeBinPath (with pkgs; [ coreutils git gnused haskellPackages.lentil ]);
         origin = "http://cgit.gum/stockholm";
@@ -59,7 +59,7 @@ with stockholm.lib;
         filename = pkgs.writers.writeDash "sed-plugin" ''
           set -efu
           exec ${pkgs.python3}/bin/python \
-            ${./Reaktor/scripts/sed-plugin.py} "$@"
+            ${./scripts/sed-plugin.py} "$@"
         '';
       };
     };
@@ -68,7 +68,7 @@ with stockholm.lib;
       activate = "match";
       pattern = "^(.*Shack.*)$";
       arguments = [1];
-      command.filename = stockholm.outPath + "/krebs/5pkgs/simple/Reaktor/scripts/shack-correct.sh";
+      command.filename = ./scripts/shack-correct.sh;
     };
 
 

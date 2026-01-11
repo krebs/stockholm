@@ -1,7 +1,7 @@
 { pkgs }:
 
-pkgs.write "certaids" {
-  "/bin/cert2json".link = pkgs.writeDash "cert2json" ''
+let
+  cert2json = pkgs.writeDash "cert2json" ''
     # usage: cert2json < CERT > JSON
     set -efu
 
@@ -106,4 +106,9 @@ pkgs.write "certaids" {
       }
     ''}
   '';
-}
+in
+
+pkgs.runCommand "certaids" {} ''
+  mkdir -p $out/bin
+  ln -s ${cert2json} $out/bin/cert2json
+''

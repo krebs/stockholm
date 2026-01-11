@@ -1,9 +1,9 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, writeDash, writeDashBin, writeJSON, writeJq, ... }:
 
 let
-  default-host-colors = pkgs.writeJSON "logf.default-host-colors.json" {
+  default-host-colors = writeJSON "logf.default-host-colors.json" {
   };
-  default-prio-colors = pkgs.writeJSON "logf.default-prio-colors.json" {
+  default-prio-colors = writeJSON "logf.default-prio-colors.json" {
     "0" = 196; # emerg
     "1" = 160; # alert
     "2" = 124; # crit
@@ -14,17 +14,17 @@ let
     "7" = 139; # debug
     "-" = 005; # undefined priority
   };
-  default-urgent = pkgs.writeJSON "logf.default-urgent.json" [
+  default-urgent = writeJSON "logf.default-urgent.json" [
   ];
 in
 
-pkgs.writeDashBin "logf" ''
+writeDashBin "logf" ''
   export LOGF_HOST_COLORS LOGF_PRIO_COLORS LOGF_URGENT
   LOGF_HOST_COLORS=$(cat "''${LOGF_HOST_COLORS-${default-host-colors}}")
   LOGF_PRIO_COLORS=$(cat "''${LOGF_PRIO_COLORS-${default-prio-colors}}")
   LOGF_URGENT=$(cat "''${LOGF_URGENT-${default-urgent}}")
   printf '%s\0' "$@" \
-    | ${pkgs.findutils}/bin/xargs -0 -P 0 -n 1 ${pkgs.writeDash "logf-remote" ''
+    | ${pkgs.findutils}/bin/xargs -0 -P 0 -n 1 ${writeDash "logf-remote" ''
         target=$1
         target_host=$(echo "$1" | sed 's/^.*@//;s/\..*//')
         exec 3>&1
@@ -32,7 +32,7 @@ pkgs.writeDashBin "logf" ''
             -o PreferredAuthentications=publickey \
             -o StrictHostKeyChecking=yes \
             exec journalctl -af -n 0 -o json \
-          | stdbuf -oL jq -Rcf ${pkgs.writeJq "logf-remote-error.jq" ''
+          | stdbuf -oL jq -Rcf ${writeJq "logf-remote-error.jq" ''
               {
                 PRIORITY: "4",
                 MESSAGE: .,
@@ -42,7 +42,7 @@ pkgs.writeDashBin "logf" ''
         sleep 10m
         exec "$0" "$@"
       ''} \
-    | ${pkgs.jq}/bin/jq -Rrf ${pkgs.writeJq "logf-filter.jq" ''
+    | ${pkgs.jq}/bin/jq -Rrf ${writeJq "logf-filter.jq" ''
         (env.LOGF_HOST_COLORS | fromjson) as $host_colors |
         (env.LOGF_PRIO_COLORS | fromjson) as $prio_colors |
         (env.LOGF_URGENT | fromjson | map("(\(.))") | join("|"))

@@ -1,7 +1,7 @@
 { fetchurl, lib, stdenv
-, jre, libX11, libXext, libXcursor, libXrandr, libXxf86vm
+, jre, xorg
 , openjdk
-, mesa_glu, openal
+, libGLU, openal
 , useAlsa ? false, alsaOss ? null }:
 with lib;
 
@@ -26,7 +26,7 @@ stdenv.mkDerivation {
     #!${stdenv.shell}
 
     export _JAVA_AWT_WM_NONREPARENTING=1
-    export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:${makeLibraryPath [ libX11 libXext libXcursor libXrandr libXxf86vm mesa_glu openal ]}
+    export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:${makeLibraryPath [ xorg.libX11 xorg.libXext xorg.libXcursor xorg.libXrandr xorg.libXxf86vm libGLU openal ]}
     ${if useAlsa then "${alsaOss}/bin/aoss" else "" } \
       ${jre}/bin/java -jar $out/ftb.jar
     EOF

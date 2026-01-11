@@ -1,10 +1,12 @@
 { fetchFromGitHub, lib, pkgs, python3Packages, stdenv }:
 
 python3Packages.buildPythonPackage rec {
-  name = "tinc_graphs-${version}";
+  pname = "tinc_graphs";
   version = "0.4.0";
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
 
-  propagatedBuildInputs = with pkgs;[
+  dependencies = with pkgs;[
     python3Packages.pygeoip
     ## ${geolite-legacy}/share/GeoIP/GeoIPCity.dat
   ];

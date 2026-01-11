@@ -6,9 +6,11 @@
 ## diff future.sorted current.sorted
 
 python3Packages.buildPythonPackage rec {
-  name = "ovh-zone-${version}";
+  pname = "ovh-zone";
   version = "0.4.4";
-  propagatedBuildInputs = with pkgs.python3Packages;[
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
+  dependencies = with pkgs.python3Packages;[
     ovh
     docopt
   ];
