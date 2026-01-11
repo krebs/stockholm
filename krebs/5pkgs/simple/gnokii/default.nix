@@ -1,5 +1,5 @@
 { lib, stdenv, fetchurl, intltool, perl, gettext, libusb-compat-0_1, pkg-config, bluez
-, readline, pcsclite, libical, gtk2, glib, libXpm
+, readline, pcsclite, libical, gtk2, glib, libxpm
 , fetchpatch
 }:
 
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     perl intltool gettext libusb-compat-0_1
     glib gtk2 pkg-config bluez readline
-    libXpm pcsclite libical
+    libxpm pcsclite libical
   ];
 
   meta = {

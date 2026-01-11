@@ -1,6 +1,6 @@
 { lib, pkgs }:
 
-pkgs.buildGo120Module rec {
+pkgs.buildGoModule rec {
   pname = "cunicu";
   version = "g${lib.substring 0 7 src.rev}";
 

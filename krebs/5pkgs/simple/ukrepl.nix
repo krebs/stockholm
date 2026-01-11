@@ -1,5 +1,5 @@
-{ lib, pkgs,stdenv }:
-let 
+{ lib, pkgs, stdenv }:
+let
   src = pkgs.fetchFromGitHub {
     owner = "makefu";
     repo = "ukrepl";
@@ -7,5 +7,5 @@ let
     hash = "sha256:1lnhkf02f18fvf3l2fcszvs4x115lql17akabd5ph9ff9z33k8rv";
   };
 in
-  pkgs.writers.writePython3Bin "ukrepl" {} (builtins.readFile (src + "/ukrepl"))
+  pkgs.writers.writePython3Bin "ukrepl" {} (src + "/ukrepl")
 

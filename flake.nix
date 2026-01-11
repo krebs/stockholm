@@ -1,10 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-writers = {
-      url = "git+https://cgit.krebsco.de/nix-writers";
-      flake = false;
-    };
+    nix-writers.url = "git+https://cgit.krebsco.de/nix-writers";
     # disko.url = "github:nix-community/disko";
     # disko.inputs.nixpkgs.follows = "nixpkgs";
     buildbot-nix.url = "github:Mic92/buildbot-nix";
@@ -43,9 +40,21 @@
     };
     overlays.default = import ./krebs/5pkgs/default.nix;
     packages = let
-      packageNames = self.lib.attrNames (self.lib.mapNixDir (x: null) ./krebs/5pkgs/simple);
-      appliedOverlay = (system: self.overlays.default {} (self.inputs.nixpkgs.legacyPackages.${system} // { lib = self.lib; }));
-    in nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ] (system: self.lib.getAttrs packageNames (appliedOverlay system));
+      allNames = self.lib.attrNames (self.lib.mapNixDir (x: null) ./krebs/5pkgs/simple);
+      appliedOverlay = (system:
+        let
+          base = self.inputs.nixpkgs.legacyPackages.${system};
+          # Apply nix-writers overlay with fixpoint so its functions can find each other
+          withWriters = nixpkgs.lib.fix (final: base // nix-writers.overlays.default final base);
+        in self.overlays.default {} (withWriters // { lib = self.lib; }));
+      # Only include derivations in packages output
+      getDerivations = overlay: builtins.listToAttrs (builtins.filter (x: x != null) (map (name:
+        let val = overlay.${name} or null;
+        in if val != null && (val.type or null) == "derivation"
+           then { inherit name; value = val; }
+           else null
+      ) allNames));
+    in nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system: getDerivations (appliedOverlay system));
     lib = import (self.outPath + "/lib/pure.nix") { lib = nixpkgs.lib; };
   };
 }

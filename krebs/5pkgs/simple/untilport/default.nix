@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ libressl, writeDashBin, ... }:
 
-pkgs.writeDashBin "untilport" ''
+writeDashBin "untilport" ''
   set -euf
 
   usage() {
@@ -13,6 +13,6 @@ pkgs.writeDashBin "untilport" ''
   if [ $# -ne 2 ]; then
     usage
   else
-    until ${pkgs.libressl.nc}/bin/nc -z "$@"; do sleep 1; done
+    until ${libressl.nc}/bin/nc -z "$@"; do sleep 1; done
   fi
 ''

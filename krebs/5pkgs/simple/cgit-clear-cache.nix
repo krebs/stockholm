@@ -1,4 +1,8 @@
-{ cache-root ? "/tmp/cgit", findutils, stockholm, writeDashBin }:
+{ cache-root ? "/tmp/cgit", findutils, lib, writeDashBin }:
+
+let
+  stockholm.lib = import ../../../lib/pure.nix { inherit lib; };
+in
 
 writeDashBin "cgit-clear-cache" ''
   set -efu

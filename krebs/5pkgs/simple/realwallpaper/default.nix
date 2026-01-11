@@ -1,8 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, nomads-cloud, ... }:
 pkgs.writers.writeDashBin "generate-wallpaper" ''
   set -euf
 
-  export PATH=${with pkgs; lib.makeBinPath [
+  export PATH=${pkgs.lib.makeBinPath ([
+    nomads-cloud
+  ] ++ (with pkgs; [
     coreutils
     curl
     gnugrep
@@ -12,9 +14,8 @@ pkgs.writers.writeDashBin "generate-wallpaper" ''
     imagemagick
     inkscape
     jq
-    nomads-cloud
     xplanet
-  ]}
+  ]))}
 
   # usage: getimg FILENAME URL
   fetch() {

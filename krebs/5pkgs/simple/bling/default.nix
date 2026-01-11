@@ -1,4 +1,7 @@
-{ imagemagick, runCommand, stockholm, ... }:
+{ imagemagick, runCommand, lib, ... }:
+let
+  stockholm.lib = import ../../../../lib/pure.nix { inherit lib; };
+in
 with stockholm.lib;
 
 let

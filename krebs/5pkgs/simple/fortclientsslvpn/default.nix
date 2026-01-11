@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, gnome3, glib, libSM, gdk_pixbuf, libX11, libXinerama, iproute,
+{ stdenv, lib, fetchurl, gtk3, glib, xorg, gdk-pixbuf, iproute2,
   makeWrapper, libredirect, ppp, coreutils, gawk, pango }:
 stdenv.mkDerivation rec {
   name = "forticlientsslvpn";
@@ -31,12 +31,12 @@ stdenv.mkDerivation rec {
   ];
 
   guiLibPath = lib.makeLibraryPath [
-    gnome3.gtk
+    gtk3
     glib
-    libSM
-    gdk_pixbuf
-    libX11
-    libXinerama
+    xorg.libSM
+    gdk-pixbuf
+    xorg.libX11
+    xorg.libXinerama
     pango
   ];
 
@@ -63,7 +63,7 @@ stdenv.mkDerivation rec {
     cp -r 64bit/. "$out/opt/fortinet"
     wrapProgram $out/opt/fortinet/forticlientsslvpn \
       --set LD_PRELOAD "${libredirect}/lib/libredirect.so" \
-      --set NIX_REDIRECTS /usr/bin/tail=${coreutils}/bin/tail:/usr/sbin/ip=${iproute}/bin/ip:/usr/sbin/pppd=${ppp}/bin/pppd
+      --set NIX_REDIRECTS /usr/bin/tail=${coreutils}/bin/tail:/usr/sbin/ip=${iproute2}/bin/ip:/usr/sbin/pppd=${ppp}/bin/pppd
 
     mkdir -p "$out/bin/"
 

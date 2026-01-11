@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, writeBashBin, ... }:
 
-pkgs.writeBashBin "goify" ''
+writeBashBin "goify" ''
   set -euf
 
   GO_HOST=''${GO_HOST:-go}
