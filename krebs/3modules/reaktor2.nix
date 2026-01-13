@@ -69,6 +69,12 @@ with lib.slib or (import ../../lib/pure.nix { inherit lib; }); {
           Group = "reaktor2";
           DynamicUser = true;
           StateDirectory = cfg.username;
+          #ExecStartPre = [
+          #  (pkgs.writeDash "test-dynamic-user" ''
+          #    set -efux
+          #    ${pkgs.coreutils}/bin/id
+          #  '')
+          #];
           ExecStart = let
             configFile = pkgs.writers.writeJSON configFileName configValue;
             configFileName = "${cfg.systemd-service-name}.config.json";

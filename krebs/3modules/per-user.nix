@@ -28,7 +28,12 @@ in {
             };
           })
           (filterAttrs (_: per-user: per-user.packages != []) cfg);
-      profiles = ["/etc/per-user/$LOGNAME"];
+
+      # XXX this breaks /etc/pam/environment because $LOGNAME doesn't get
+      # replaced by @{PAM_USER} the way $USER does.
+      # See <nixpkgs/nixos/modules/config/system-environment.nix>
+      #profiles = ["/etc/per-user/$LOGNAME"];
+      profiles = ["/etc/per-user/$USER"];
     };
   };
 }

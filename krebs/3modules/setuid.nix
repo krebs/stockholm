@@ -33,7 +33,7 @@ let
         };
         capabilities = mkOption {
           default = [];
-          type = types.listOf types.str;
+          type = types.listOf types.str; # TODO
         };
         owner = mkOption {
           default = "root";
@@ -52,6 +52,8 @@ let
             merge = mergeOneOption;
           };
         };
+        # TODO clear non-standard wrapperDirs
+        # TODO? allow only wrapperDirs below /run/wrappers?
         wrapperDir = mkOption {
           default = config.security.wrapperDir;
           type = types.absolute-pathname;
@@ -73,13 +75,16 @@ let
         chown ${cfg.owner}:${cfg.group} ${dst}
         chmod ${cfg.mode} ${dst}
         ${optionalString (cfg.capabilities != []) /* sh */ ''
+          set -x
           ${pkgs.libcap.out}/bin/setcap ${concatMapStringsSep "," shell.escape cfg.capabilities} ${dst}
+          set +x
         ''}
       '';
     }));
   };
 
   imp = {
+    # run after "wrappers" so config.security.wrapperDir can be hijacked.
     systemd.services."krebs.setuid" = {
       wantedBy = [ "suid-sgid-wrappers.service" ];
       after = [ "suid-sgid-wrappers.service" ];

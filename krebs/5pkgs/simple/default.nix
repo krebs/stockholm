@@ -13,5 +13,15 @@ let
         lib.compareVersions upstream.name override.name != -1
     then lib.trace "Upstream `${upstream.name}' gets overridden by `${override.name}'." override
     else override;
+
+  ## This callPackage will try to detect obsolete overrides.
+  #callPackage = path: args: let
+  #  pname = (parseDrvName override.name).name;
+  #  override = self.callPackage path args;
+  #  upstream = super.${pname} or { name = ""; };
+  #in
+  #  override.overrideAttrs (old: {
+  #    name = warnOldVersion upstream.name old.name;
+  #  });
 in
   lib.mapNixDir (path: callPackage path {}) ./.

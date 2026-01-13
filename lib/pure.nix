@@ -9,7 +9,7 @@ let
       };
     in filterAttrsRecursive (name: _: !hasPrefix "_" name) eval.config;
 
-    evalSource = import ./eval-source.nix;
+    evalSource = import ./eval-source.nix { lib = stockholm.lib; };
 
     evalSubmodule = submodule: modules: let
       prefix = ["evalSubmodule"];
@@ -37,7 +37,7 @@ let
 
     eq = x: y: x == y;
     ne = x: y: x != y;
-    mod = x: y: x - y * (x / y);
+    #mod = x: y: x - y * (x / y);
 
     on = b: u: x: y: b (u x) (u y);
 

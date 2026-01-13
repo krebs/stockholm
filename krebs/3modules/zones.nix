@@ -10,7 +10,8 @@ with lib; {
     default = {
       "krebsco.de" = /* bindzone */ ''
         $TTL 60
-        @ 3600 IN SOA spam.krebsco.de. spam.krebsco.de. 0 7200 3600 86400 3600
+        @ IN SOA spam.krebsco.de. spam.krebsco.de. 0 7200 3600 86400 3600
+
         @ 3600 IN NS ns1
         @ 3600 IN NS ni
         @ 3600 IN NS ns2.he.net.

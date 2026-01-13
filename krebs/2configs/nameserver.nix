@@ -146,10 +146,14 @@ in {
     '';
   };
 
+  #krebs.systemd.services.knot.restartIfCredentialsChange = true;
   systemd.services."knsupdate-krebsco.de" = {
     serviceConfig = {
       Type = "oneshot";
       SyslogIdentifier = "knsupdate-krebsco.de";
+      #LoadCredential = [
+      #  "keys.conf:/var/src/secrets/knot-keys.conf"
+      #];
       ExecStart = pkgs.writeDash "knsupdate-krebsco.de" /* sh */ ''
         set -efu
 

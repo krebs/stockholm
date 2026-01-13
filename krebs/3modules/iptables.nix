@@ -19,6 +19,14 @@ let
   api = {
     enable = mkEnableOption "iptables";
 
+    rules4 = mkOption {
+      default = buildTables "v4" cfg.tables;
+    };
+
+    rules6 = mkOption {
+      default = buildTables "v6" cfg.tables;
+    };
+
     #tables.filter.INPUT = {
     # policy = "DROP";
     # rules = [

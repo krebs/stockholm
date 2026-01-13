@@ -73,6 +73,12 @@ with lib; {
           pkgs.findutils
           pkgs.inotify-tools
         ];
+        # TODO
+        # der code könnte aber bisschen vorbereitet werden, damit man später einfach file-modes einbauen kann
+        # die drei finds müssten zu `find "$ROOT_PATH" -exec ${permown}` {} \;` werden
+        # und der while-block zu:
+        # ${permown} "$path" (egal ob vor oder nach dem if test -d)
+        # und dann müsste man danach nur das permown script bearbeiten
         serviceConfig = {
           ExecStart = pkgs.writeDash "permown" ''
             set -efu

@@ -1,3 +1,4 @@
+# TODO kill me in favor of urxvt-resize-font
 { writeDashBin }:
 writeDashBin "font-size" ''
   set -efu

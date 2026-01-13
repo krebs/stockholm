@@ -1,5 +1,6 @@
-{ config, pkgs, lib, ... }:
-with lib.slib or (import ../../lib/pure.nix { inherit lib; }); {
+{ config, pkgs, lib, ... }: let
+  slib = lib.slib or (import ../../lib/pure.nix { inherit lib; });
+in with slib; {
   options.krebs.tinc = mkOption {
     default = {};
     description = ''
@@ -235,13 +236,14 @@ with lib.slib or (import ../../lib/pure.nix { inherit lib; }); {
               "$CREDENTIALS_DIRECTORY"/rsa_key.priv \
               /etc/tinc/${netname}/
         '';
-        ExecStart = "+" + toString [
-          "${cfg.tincPackage}/sbin/tincd"
-          "-D"
-          "-U ${cfg.username}"
-          "-d 0"
-          "-n ${netname}"
-        ];
+        ExecStart = "+" + pkgs.writers.writeDash "tinc-${netname}" ''
+          set -efu
+          exec ${cfg.tincPackage}/sbin/tincd \
+              -D \
+              -U ${cfg.username} \
+              -d 0 \
+              -n ${netname}
+        '';
         SyslogIdentifier = netname;
         DynamicUser = true;
         User = cfg.username;

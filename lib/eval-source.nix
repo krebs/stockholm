@@ -1,4 +1,5 @@
-with import <stockholm/lib>;
+{ lib }:
+with lib;
 let
   eval = _file: source: evalModules {
     modules = singleton {

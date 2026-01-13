@@ -62,24 +62,26 @@ let
               }
             ]));
 
-      programs.ssh.extraConfig = concatMapStrings
-        (net: ''
-          Host ${toString (net.aliases ++ net.addrs)}
-            Port ${toString net.ssh.port}
-        '')
-        (filter
-          (net: net.ssh.port != 22)
-          (concatMap (host: attrValues host.nets)
-            (mapAttrsToList
-              (_: host: recursiveUpdate host
-                (optionalAttrs (cfg.dns.search-domain != null &&
-                                hasAttr cfg.dns.search-domain host.nets) {
-                  nets."" = host.nets.${cfg.dns.search-domain} // {
-                    aliases = [host.name];
-                    addrs = [];
-                  };
-                }))
-              config.krebs.hosts)));
+      programs.ssh.extraConfig =
+        mkBefore/*<-KILLME*/
+          (concatMapStrings
+            (net: ''
+              Host ${toString (net.aliases ++ net.addrs)}
+                Port ${toString net.ssh.port}
+            '')
+            (filter
+              (net: net.ssh.port != 22)
+              (concatMap (host: attrValues host.nets)
+                (mapAttrsToList
+                  (_: host: recursiveUpdate host
+                    (optionalAttrs (cfg.dns.search-domain != null &&
+                                    hasAttr cfg.dns.search-domain host.nets) {
+                      nets."" = host.nets.${cfg.dns.search-domain} // {
+                        aliases = [host.name];
+                        addrs = [];
+                      };
+                    }))
+                  config.krebs.hosts))));
     }
   ];
 
