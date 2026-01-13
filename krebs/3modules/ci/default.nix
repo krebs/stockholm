@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with lib.slib or (import ../../lib/pure.nix { inherit lib; });
+with lib.slib or (import ../../../lib/pure.nix { inherit lib; });
 
 let
   cfg = config.krebs.ci;
