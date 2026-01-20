@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     {
-      echo '#! ${pkgs.dash}/bin/dash'
+      echo '#! ${pkgs.bash}/bin/bash'
       echo 'export PATH=${lib.makeBinPath [
         pkgs.coreutils
         pkgs.jq
