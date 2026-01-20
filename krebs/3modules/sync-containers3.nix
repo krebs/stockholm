@@ -358,9 +358,7 @@ in {
       networking.useNetworkd = true;
       services.resolved = {
         enable = true;
-        extraConfig = ''
-          Domains=~.
-        '';
+        settings.Resolve.Domains = [ "~." ];
       };
       systemd.network = {
         enable = true;
