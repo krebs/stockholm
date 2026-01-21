@@ -107,6 +107,7 @@ in {
       desc = "take all computers hostage, they love it";
       section = "configuration";
       remotes = {
+        krebs = "https://github.com/krebs/stockholm";
         lassulus = "http://cgit.orange.r/stockholm";
         makefu = "https://cgit.euer.krebsco.de/makefu/stockholm.git";
         tv = "http://cgit.ni.r/stockholm";
