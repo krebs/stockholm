@@ -1,8 +1,10 @@
-{lib, pkgs, pythonPackages, fetchurl, ... }:
+{lib, pkgs, python3Packages, fetchurl, ... }:
 
-pythonPackages.buildPythonPackage rec {
+python3Packages.buildPythonPackage rec {
   name = "collectd-connect-time-${version}";
   version = "0.3.0";
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
   src = fetchurl {
     url = "https://pypi.python.org/packages/source/c/collectd-connect-time/collectd-connect-time-${version}.tar.gz";
     sha256 = "0vvrf9py9bwc8hk3scxwg4x2j8jlp2qva0mv4q8d9m4b4mk99c95";
