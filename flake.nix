@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-writers.url = "git+https://cgit.krebsco.de/nix-writers";
+    nix-writers.inputs.nixpkgs.follows = "nixpkgs";
     # disko.url = "github:nix-community/disko";
     # disko.inputs.nixpkgs.follows = "nixpkgs";
     buildbot-nix.url = "github:Mic92/buildbot-nix";
