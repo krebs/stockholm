@@ -107,9 +107,9 @@ in {
       desc = "take all computers hostage, they love it";
       section = "configuration";
       remotes = {
+        lassulus = "http://cgit.orange.r/stockholm";
         makefu = "https://cgit.euer.krebsco.de/makefu/stockholm.git";
         tv = "http://cgit.ni.r/stockholm";
-        lassulus = "http://cgit.orange.r/stockholm";
       };
     })
     ({ krebs.git = defineRepo {
