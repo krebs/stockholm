@@ -235,20 +235,20 @@ let
     env.TASKDATA = "${stateDir}/${name}";
     commands = rec {
       add.filename = pkgs.writers.writeDash "${name}-task-add" ''
-        ${pkgs.taskwarrior}/bin/task rc:${taskRcFile} add "$1"
+        ${pkgs.taskwarrior2}/bin/task rc:${taskRcFile} add "$1"
       '';
       list.filename = pkgs.writers.writeDash "${name}-task-list" ''
-        ${pkgs.taskwarrior}/bin/task rc:${taskRcFile} export \
+        ${pkgs.taskwarrior2}/bin/task rc:${taskRcFile} export \
           | ${pkgs.jq}/bin/jq -r '
               .[] | select(.id != 0) | "\(.id) \(.description)"
             '
       '';
       delete.filename = pkgs.writers.writeDash "${name}-task-delete" ''
-        ${pkgs.taskwarrior}/bin/task rc:${taskRcFile} delete "$1"
+        ${pkgs.taskwarrior2}/bin/task rc:${taskRcFile} delete "$1"
       '';
       del = delete;
       done.filename = pkgs.writers.writeDash "${name}-task-done" ''
-        ${pkgs.taskwarrior}/bin/task rc:${taskRcFile} done "$1"
+        ${pkgs.taskwarrior2}/bin/task rc:${taskRcFile} done "$1"
       '';
     };
   };
@@ -456,7 +456,7 @@ in {
           printf 'HTTP/1.1 200 OK\r\n'
           printf 'Connection: close\r\n'
           printf '\r\n'
-          TASKDATA=/var/lib/reaktor2/agenda ${pkgs.taskwarrior}/bin/task rc:${taskRcFile} export
+          TASKDATA=/var/lib/reaktor2/agenda ${pkgs.taskwarrior2}/bin/task rc:${taskRcFile} export
           exit
         ;;
       esac
