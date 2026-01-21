@@ -31,7 +31,7 @@
     ../../2configs/shack/ssh-keys.nix
 
     # drivedroid.shack for shackphone
-    ../../2configs/shack/drivedroid.nix
+    #../../2configs/shack/drivedroid.nix (FIXME error: attribute 'drivedroid-gen-repo' missing)
     # ../../2configs/shack/nix-cacher.nix
 
     # Say if muell will be collected
