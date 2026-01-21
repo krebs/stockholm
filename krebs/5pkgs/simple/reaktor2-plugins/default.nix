@@ -38,7 +38,7 @@ with stockholm.lib;
       filename = ./scripts/random-issue.sh;
       env = {
         PATH = makeBinPath (with pkgs; [ coreutils git gnused haskellPackages.lentil ]);
-        origin = "http://cgit.gum/stockholm";
+        origin = "https://cgit.krebsco.de/stockholm";
         state_dir = "/tmp/stockholm-issue";
       };
     };
