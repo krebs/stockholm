@@ -70,7 +70,7 @@
     # ../../2configs/shack/share.nix
 
     # mobile.lounge.mpd.shack
-    ../../2configs/shack/mobile.mpd.nix
+    #../../2configs/shack/mobile.mpd.nix (FIXME Compatibility with CMake < 3.5 has been removed from CMake.)
 
     # hass.shack
     ../../2configs/shack/glados
