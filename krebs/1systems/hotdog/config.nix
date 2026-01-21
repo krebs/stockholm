@@ -5,6 +5,17 @@
     ../../../krebs
     ../../../krebs/2configs
     ../../../krebs/2configs/nginx.nix
+    {
+      # Cherry-pick services.nginx.recommendedTlsSettings to fix:
+      # nginx: [emerg] "ssl_conf_command" directive is not supported on this platform
+      services.nginx.recommendedTlsSettings = lib.mkForce false;
+      services.nginx.appendHttpConfig = ''
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:SSL:10m;
+        ssl_session_tickets off;
+        ssl_prefer_server_ciphers off;
+      '';
+    }
 
     ../../../krebs/2configs/binary-cache/nixos.nix
     ../../../krebs/2configs/ircd.nix
