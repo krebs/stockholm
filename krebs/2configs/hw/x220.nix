@@ -17,8 +17,8 @@
   };
 
   hardware.opengl.extraPackages = [
-    pkgs.vaapiIntel
-    pkgs.vaapiVdpau
+    pkgs.intel-vaapi-driver
+    pkgs.libva-vdpau-driver
   ];
 
   services.xserver = {
