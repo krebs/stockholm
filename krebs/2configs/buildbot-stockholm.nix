@@ -19,7 +19,6 @@ with import ../../lib/pure.nix { inherit lib; };
     enable = true;
     repos = {
       disko.urls = [
-        "http://cgit.gum.r/disko"
         "http://cgit.ni.r/disko"
         "http://cgit.orange.r/disko"
       ];
@@ -33,7 +32,6 @@ with import ../../lib/pure.nix { inherit lib; };
         "http://cgit.orange.r/nix-writers"
       ];
       stockholm.urls = [
-        "http://cgit.gum.r/stockholm"
         "http://cgit.ni.r/stockholm"
         "http://cgit.orange.r/stockholm"
       ];
