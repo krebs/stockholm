@@ -530,7 +530,7 @@ in {
             165IRVWSikZjkbdeg4Zz3dYkHtfFhNQM7QIDAQAB
             -----END RSA PUBLIC KEY-----
           '';
-          tinc.pubkey_ed25519 = "Pc/H50xDTU3dUxYynclf/Nxg2Q5k1aSdwGv4SBQPYCO";
+          tinc.pubkey_ed25519 = "681WIAMdFYnmhgeIRaXyIDAl8wUd+ZYssZBgB/LMGHE";
         };
       };
     };
