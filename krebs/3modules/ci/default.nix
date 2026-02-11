@@ -50,7 +50,7 @@ let
               "${url}",
               workdir='${name}-${elemAt(splitString "." url) 1}', branches=True,
               project='${name}',
-              pollinterval=30
+              pollInterval=30
           )
         '') repo.urls
       ) cfg.repos;

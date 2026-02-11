@@ -98,7 +98,7 @@ in {
   krebs.secret.files.konsens = {
     path = "/var/lib/konsens/.ssh/id_ed25519";
     owner = konsens-user;
-    source-path = "${config.krebs.secret.directory}/konsens.id_ed25519>";
+    source-path = "${config.krebs.secret.directory}/konsens.id_ed25519";
   };
 
   imports = [
@@ -107,9 +107,10 @@ in {
       desc = "take all computers hostage, they love it";
       section = "configuration";
       remotes = {
-        makefu = "http://cgit.gum.r/stockholm";
-        tv = "http://cgit.ni.r/stockholm";
+        krebs = "https://github.com/krebs/stockholm";
         lassulus = "http://cgit.orange.r/stockholm";
+        makefu = "https://cgit.euer.krebsco.de/makefu/stockholm.git";
+        tv = "http://cgit.ni.r/stockholm";
       };
     })
     ({ krebs.git = defineRepo {

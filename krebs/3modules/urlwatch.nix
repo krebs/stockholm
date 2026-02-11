@@ -214,6 +214,7 @@ let
       };
       filter = mkOption {
         default = null;
+        # TODO nullOr subtypes.filter
         type =
           with types;
           nullOr (either str (listOf (pkgs.formats.json {}).type));

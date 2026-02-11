@@ -1,7 +1,7 @@
 import <nixpkgs/nixos> {} // rec {
   lib = import ./lib;
   systems = with lib; let
-    namespace = getEnv "LOGNAME";
+    namespace = krebs;
     systemsDir = <stockholm> + "/${namespace}/1systems";
   in
     genAttrs

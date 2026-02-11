@@ -114,6 +114,7 @@ with stockholm.lib;
           git diff --stat $id2..$id \
             | sed '$!s/\(+*\)\(-*\)$/'$(green '\1')$(red '\2')'/'
         )"
+        echo "$(red "$message")"
       ''}
 
     done

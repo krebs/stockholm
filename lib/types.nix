@@ -1,5 +1,4 @@
 { lib, ... }:
-
 let
   inherit (lib)
     all any attrNames concatMapStringsSep concatStringsSep const filter flip
@@ -198,9 +197,32 @@ rec {
       };
       tinc = mkOption {
         type = let net = config; in nullOr (submodule ({ config, ... }: {
+          config = {
+            config = 
+              #assert (with builtins; trace "xxxxxx ${toJSON config.subnets}" true);
+              concatStringsSep "\n" (
+                (optionals (net.via != null)
+                  (map (a: "Address = ${a} ${toString config.port}") net.via.addrs))
+                ++
+                (map (a: "Subnet = ${a}") config.subnets)
+                ++
+                (map (a: "Subnet = ${a}") net.addrs)
+                ++
+                [config.extraConfig]
+                ++
+                [config.pubkey]
+                ++
+                optional (config.pubkey_ed25519 != null) ''
+                  Ed25519PublicKey = ${config.pubkey_ed25519}
+                ''
+                ++
+                optional (config.weight != null) "Weight = ${toString config.weight}"
+              );
+          };
           options = {
             config = mkOption {
               type = str;
+              # TODO: readOnly = true;
               default = concatStringsSep "\n" (
                 (optionals (net.via != null)
                   (map (a: "Address = ${a} ${toString config.port}") net.via.addrs))

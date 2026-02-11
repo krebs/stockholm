@@ -7,7 +7,7 @@ with python3Packages; buildPythonPackage rec {
   build-system = [ python3Packages.setuptools ];
   propagatedBuildInputs = [
     docopt
-    GitPython
+    gitpython
     pkgs.git
   ];
   src = fetchFromGitHub {

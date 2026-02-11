@@ -27,11 +27,11 @@
 
     ### shackspace ###
     # handle the worlddomination map via coap
-    ../../2configs/shack/worlddomination.nix
+    #../../2configs/shack/worlddomination.nix (FIXME error: python3.13-LinkHeader-0.4.3 does not configure a `format`. To build with setuptools as before, set `pyproject = true` and `build-system = [ setuptools ]`.)
     ../../2configs/shack/ssh-keys.nix
 
     # drivedroid.shack for shackphone
-    ../../2configs/shack/drivedroid.nix
+    #../../2configs/shack/drivedroid.nix (FIXME error: attribute 'drivedroid-gen-repo' missing)
     # ../../2configs/shack/nix-cacher.nix
 
     # Say if muell will be collected
@@ -70,7 +70,7 @@
     # ../../2configs/shack/share.nix
 
     # mobile.lounge.mpd.shack
-    ../../2configs/shack/mobile.mpd.nix
+    #../../2configs/shack/mobile.mpd.nix (FIXME Compatibility with CMake < 3.5 has been removed from CMake.)
 
     # hass.shack
     ../../2configs/shack/glados

@@ -15,7 +15,7 @@ in {
           secret-file
         else
           secret-file // {
-            source-path = "${config.krebs.secret.directory}/secret-file.source-path";
+            source-path = "${config.krebs.secret.directory}/${secret-file.source-path}";
           }
       );
     };

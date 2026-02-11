@@ -2,7 +2,6 @@
 with lib; let
   check = hostname: any (domain: hasSuffix ".${domain}" hostname) domains;
   domains = attrNames (filterAttrs (_: slib.eq "hosts") config.krebs.dns.providers);
-  # we need this import because we have infinite recursion otherwise
   slib = lib.slib or (import ../../lib/pure.nix { inherit lib; });
 in {
 

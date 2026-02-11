@@ -8,6 +8,18 @@
     <stockholm/krebs/2configs/nameserver.nix>
   ];
 
+  #networking.defaultGateway6 = {
+  #  address = "fe80::1";
+  #  interface = "ens3";
+  #};
+  #networking.interfaces.ens3.ipv6.addresses = [
+  #  {
+  #    # old: address = "2a03:4000:13:4c::1";
+  #    address = "2a03:4000:1a:cf::1"; #/64"
+  #    prefixLength = 64;
+  #  }
+  #];
+
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.logRefusedConnections = false;
   networking.firewall.logRefusedUnicastsOnly = false;
