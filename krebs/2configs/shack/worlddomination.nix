@@ -3,7 +3,7 @@
 with import ../../../lib/pure.nix { inherit lib; };
 let
   pkg = pkgs.stdenv.mkDerivation {
-    name = "worlddomination-2020-12-01";
+    name = "worlddomination-2025-04-02";
     src = pkgs.fetchFromGitHub {
       owner = "shackspace";
       repo = "worlddomination";
@@ -11,9 +11,8 @@ let
       sha256 = "sha256-AbRqxxY6hYNg4qkk/akuw4f+wJh4nx1hfEA4Lp5B+1E=";
     };
     buildInputs = [
-      (pkgs.python310.withPackages (pythonPackages: with pythonPackages; [
+      (pkgs.python3.withPackages (pythonPackages: with pythonPackages; [
         docopt
-        LinkHeader
         aiocoap
         grequests
         paramiko
@@ -31,16 +30,6 @@ let
   pythonPackages = pkgs.python3Packages;
   # https://github.com/chrysn/aiocoap
 
-  LinkHeader = pythonPackages.buildPythonPackage {
-    name = "LinkHeader-0.4.3";
-    src = pkgs.fetchurl { url = "https://files.pythonhosted.org/packages/27/d4/eb1da743b2dc825e936ef1d9e04356b5701e3a9ea022c7aaffdf4f6b0594/LinkHeader-0.4.3.tar.gz"; sha256 = "7fbbc35c0ba3fbbc530571db7e1c886e7db3d718b29b345848ac9686f21b50c3"; };
-    propagatedBuildInputs = [ ];
-    meta = with pkgs.lib; {
-      homepage = "";
-      license = licenses.bsdOriginal;
-      description = "Parse and format link headers according to RFC 5988 \"Web Linking\"";
-    };
-  };
   wdpath = "/usr/worlddomination/wd.lst";
   esphost = "10.42.24.7"; # esp8266
   afrihost = "10.42.25.201"; # africa

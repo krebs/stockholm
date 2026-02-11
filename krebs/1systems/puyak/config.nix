@@ -27,7 +27,7 @@
 
     ### shackspace ###
     # handle the worlddomination map via coap
-    #../../2configs/shack/worlddomination.nix (FIXME error: python3.13-LinkHeader-0.4.3 does not configure a `format`. To build with setuptools as before, set `pyproject = true` and `build-system = [ setuptools ]`.)
+    ../../2configs/shack/worlddomination.nix
     ../../2configs/shack/ssh-keys.nix
 
     # drivedroid.shack for shackphone
