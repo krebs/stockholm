@@ -20,5 +20,4 @@
   };
   secure = true;
   ssh.pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8T+2Oe6qCE0uEb9H7CWZengyhHK30NelmYmpI4Umpm root@fu";
-  syncthing.id = "F5B3EPT-OEOFYMV-GATESYO-727M6R4-YBXGW6Q-SG3QWC7-PPVFX4C-AY4UKAJ";
 }
