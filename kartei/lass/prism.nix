@@ -3,9 +3,6 @@ rec {
   extraZones = {
     "krebsco.de" = ''
       cache     60 IN A ${nets.internet.ip4.addr}
-      p         60 IN A ${nets.internet.ip4.addr}
-      c         60 IN A ${nets.internet.ip4.addr}
-      paste     60 IN A ${nets.internet.ip4.addr}
       prism     60 IN A ${nets.internet.ip4.addr}
       social    60 IN A ${nets.internet.ip4.addr}
     '';

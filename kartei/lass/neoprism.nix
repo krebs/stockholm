@@ -1,5 +1,12 @@
 { r6, w6, ... }:
-{
+rec {
+  extraZones = {
+    "krebsco.de" = ''
+      p         60 IN A ${nets.internet.ip4.addr}
+      c         60 IN A ${nets.internet.ip4.addr}
+      paste     60 IN A ${nets.internet.ip4.addr}
+    '';
+  };
   nets = rec {
     internet = {
       ip4 = rec {
