@@ -32,7 +32,10 @@
     ../../../krebs/2configs/mastodon.nix
 
     ## (shackie irc bot
-    ../../../krebs/2configs/shack/reaktor.nix
+    ## deactivated, new shack open bot is deployed via telegram
+    ## irc bot would require authentication which is in principle supported by reaktor2
+    ## but not configured
+    # ../../../krebs/2configs/shack/reaktor.nix
   ];
 
   krebs.build.host = config.krebs.hosts.hotdog;
