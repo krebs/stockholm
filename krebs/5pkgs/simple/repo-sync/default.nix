@@ -2,7 +2,7 @@
 
 with python3Packages; buildPythonPackage rec {
   name = "repo-sync-${version}";
-  version = "0.2.7";
+  version = "1.0.0";
   pyproject = true;
   build-system = [ python3Packages.setuptools ];
   propagatedBuildInputs = [
@@ -14,7 +14,7 @@ with python3Packages; buildPythonPackage rec {
     owner = "krebs";
     repo = "repo-sync";
     rev = version;
-    sha256 = "1qjf1jmxf7xzwskybdys4vqncnwj9f3xwk1gv354zrla68s533cw";
+    hash = "sha256-dkhPUaCL+tZn5rF7NN8A6NK/0tz669dLLYRGtRxO+fM=";
   };
   meta = {
     homepage = http://github.com/makefu/repo-sync;

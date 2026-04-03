@@ -17,6 +17,7 @@ let
           branches = mkOption {
             type = types.attrsOf (types.submodule ({ config, ... }: {
               options = {
+                smart = mkEnableOption "smart sync behavior";
                 origin = mkOption {
                   type = types.source-types.git;
                 };
