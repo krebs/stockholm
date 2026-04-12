@@ -70,10 +70,6 @@ in {
           address: ${config.krebs.hosts.ne.nets.internet.ip4.addr}
           key: krebs_transfer_notify_key
 
-        - id: krebscode_ni
-          address: ${config.krebs.hosts.ni.nets.internet.ip4.addr}
-          key: krebs_transfer_notify_key
-
       acl:
         - id: acme_acl
           key: acme
@@ -174,8 +170,8 @@ in {
           echo server krebsco.de.
           echo zone krebsco.de.
           echo origin krebsco.de.
-          echo add _25._tcp.ni 60 IN TLSA 3 0 1 $certificate_association_data
-          echo add _443._tcp.ni 60 IN TLSA 3 0 1 $certificate_association_data
+          echo add _25._tcp.ne 60 IN TLSA 3 0 1 $certificate_association_data
+          echo add _443._tcp.ne 60 IN TLSA 3 0 1 $certificate_association_data
           echo show
           echo send
           echo answer
