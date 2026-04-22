@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, slib, ... }: {
   extraZones = {
     "krebsco.de" = ''
       @ 60 IN MX 5 ne
