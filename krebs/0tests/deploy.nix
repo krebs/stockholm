@@ -3,6 +3,7 @@ import <nixpkgs/nixos/tests/make-test.nix> ({ ... }:
 
 let
   pkgs = import <nixpkgs> { overlays = [(import ../5pkgs)]; };
+  krops-pkgs = import <stockholm/submodules/krops/pkgs> {};
   test-config = <stockholm/krebs/0tests/data/test-config.nix>;
   privKey = ''
     -----BEGIN OPENSSH PRIVATE KEY-----
@@ -43,7 +44,7 @@ let
     export NIX_PATH=stockholm=${<stockholm>}:nixpkgs=${<nixpkgs>}:$NIX_PATH
     exec >&2
     source=${pkgs.writeJSON "source.json" populate-source}
-    LOGNAME=krebs ${pkgs.populate}/bin/populate --force root@server:22/var/src/ < "$source"
+    LOGNAME=krebs ${krops-pkgs.populate}/bin/populate --force root@server:22/var/src/ < "$source"
   '';
   minimalSystem = (import <nixpkgs/nixos/lib/eval-config.nix> {
     modules = [

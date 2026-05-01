@@ -189,7 +189,7 @@ let
       enable = true;
       workerUser = "testworker";
       workerPass = "pass";
-      packages = with pkgs; [ git gnutar gzip jq nix populate ];
+      packages = with pkgs; [ git gnutar gzip jq nix ];
     };
 
     system.activationScripts.buildbots-nix-profile = ''
