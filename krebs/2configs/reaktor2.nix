@@ -356,56 +356,6 @@ let
             '';
           };
         }
-        {
-          pattern = ''^18@p\s+(\S+)\s+(\d+)m$'';
-          activate = "match";
-          arguments = [1 2];
-          command = {
-            env = {
-              CACHE_DIR = "${stateDir}/krebsfood";
-            };
-            filename =
-            let
-              osm-restaurants-src = pkgs.fetchFromGitHub {
-                owner = "kmein";
-                repo = "scripts";
-                rev = "dda381be26abff73a0cf364c6dfff6e1701f41ee";
-                sha256 = "sha256-J7jGWZeAULDA1EkO50qx+hjl+5IsUj389pUUMreKeNE=";
-              };
-              osm-restaurants = pkgs.callPackage "${osm-restaurants-src}/osm-restaurants" {};
-            in pkgs.writers.writeDash "krebsfood" ''
-              set -efu
-              export PATH=${makeBinPath [
-                osm-restaurants
-                pkgs.coreutils
-                pkgs.curl
-                pkgs.jq
-              ]}
-              poi=$(curl -fsS http://c.r/poi.json | jq --arg name "$1" '.[$name]')
-              if [ "$poi" = null ]; then
-                latitude=52.51252
-                longitude=13.41740
-              else
-                latitude=$(echo "$poi" | jq -r .latitude)
-                longitude=$(echo "$poi" | jq -r .longitude)
-              fi
-
-              for api_endpoint in \
-                https://lz4.overpass-api.de/api/interpreter \
-                https://z.overpass-api.de/api/interpreter \
-                https://maps.mail.ru/osm/tools/overpass/api/interpreter \
-                https://overpass.openstreetmap.ru/api/interpreter \
-                https://overpass.kumi.systems/api/interpreter
-              do
-                restaurant=$(osm-restaurants --endpoint "$api_endpoint" --radius "$2" --latitude "$latitude" --longitude "$longitude")
-                if [ "$?" -eq 0 ]; then
-                  break
-                fi
-              done
-              printf '%s' "$restaurant" | tail -1 | jq -r '"How about \(.tags.name) (https://www.openstreetmap.org/\(.type)/\(.id)), open \(.tags.opening_hours)?"'
-            '';
-          };
-        }
         bedger-add
         bedger-balance
         bing
