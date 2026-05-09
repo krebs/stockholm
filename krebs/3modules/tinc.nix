@@ -85,7 +85,7 @@ in with slib; {
 
         tincPackage = mkOption {
           type = types.package;
-          default = pkgs.tinc_pre;
+          default = pkgs.tincr;
           description = "Tincd package to use.";
         };
 
