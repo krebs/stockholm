@@ -22,6 +22,7 @@ in with slib; {
                 Name = ${tinc.config.host.name}
                 LogLevel = ${toString tinc.config.logLevel}
                 Interface = ${netname}
+                DeviceType = tun
                 Broadcast = no
                 ${concatMapStrings (c: "ConnectTo = ${c}\n") tinc.config.connectTo}
                 Port = ${toString tinc.config.host.nets.${netname}.tinc.port}
