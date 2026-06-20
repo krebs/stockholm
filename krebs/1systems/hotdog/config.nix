@@ -21,7 +21,6 @@
     ../../../krebs/2configs/ircd.nix
     ../../../krebs/2configs/reaktor2.nix
     ../../../krebs/2configs/wiki.nix
-    ../../../krebs/2configs/acme.nix
     ../../../krebs/2configs/mud.nix
     ../../../krebs/2configs/repo-sync.nix
 

@@ -39,13 +39,13 @@ in
 
   systemd.services.gollum.environment.LC_ALL = "en_US.UTF-8";
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  security.acme.certs."wiki.r".server = config.krebs.ssl.acmeURL;
+  networking.firewall.allowedTCPPorts = [ 80 ];
+  # wiki.r is reached over retiolum, which is already encrypted at the network
+  # layer; serve plain HTTP so it no longer depends on the krebs ca.r ACME CA
+  # (step-ca, removed from hotdog).
   services.nginx = {
     enable = true;
     virtualHosts."wiki.r" = {
-      enableACME = true;
-      addSSL = true;
       locations."/" = {
         proxyPass = "http://[::1]:${toString config.services.gollum.port}";
         proxyWebsockets = true;
