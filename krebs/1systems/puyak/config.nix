@@ -18,7 +18,7 @@
     ../../2configs/tor/initrd.nix
 
     ../../2configs/binary-cache/nixos.nix
-    ../../2configs/binary-cache/prism.nix
+    # ../../2configs/binary-cache/prism.nix
 
     ## news host
 
