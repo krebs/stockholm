@@ -80,6 +80,22 @@
         "type": "github"
       }
     },
+    "kartei": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783021157,
+        "narHash": "sha256-xuZWc6ZafjcU8Wo1f8XZtUGS9hQP1+BR4eWzH6c9qeE=",
+        "owner": "krebs",
+        "repo": "kartei",
+        "rev": "8711debcc05b7202be43fc233a93287e14c764e3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "krebs",
+        "repo": "kartei",
+        "type": "github"
+      }
+    },
     "nix-writers": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -120,6 +136,7 @@
     "root": {
       "inputs": {
         "buildbot-nix": "buildbot-nix",
+        "kartei": "kartei",
         "nix-writers": "nix-writers",
         "nixpkgs": "nixpkgs"
       }
