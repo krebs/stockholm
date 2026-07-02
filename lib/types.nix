@@ -496,6 +496,22 @@ rec {
       pubkey = mkOption {
         type = nullOr ssh-pubkey;
         default = null;
+        description = ''
+          The user's SSH public key. May contain multiple keys separated by
+          newlines; use `pubkeys` to consume the individual keys.
+        '';
+      };
+      pubkeys = mkOption {
+        type = listOf ssh-pubkey;
+        defaultText = "non-empty lines of `pubkey`";
+        default =
+          optionals (config.pubkey != null)
+            (filter (line: line != "") (splitString "\n" config.pubkey));
+        description = ''
+          The user's SSH public keys as a list of single-line keys, derived
+          from `pubkey` by default. Consumers that emit one authorized-keys
+          entry per key should use this instead of `pubkey`.
+        '';
       };
       uid = mkOption {
         type = int;
