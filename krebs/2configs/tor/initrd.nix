@@ -6,11 +6,10 @@
   boot.initrd.network.ssh = {
     enable = true;
     port = 22;
-    authorizedKeys = [
-      config.krebs.users.lass.pubkey
-      config.krebs.users.makefu.pubkey
-      config.krebs.users.tv.pubkey
-    ];
+    authorizedKeys =
+      config.krebs.users.lass.pubkeys
+      ++ config.krebs.users.makefu.pubkeys
+      ++ config.krebs.users.tv.pubkeys;
     hostKeys = [ "${config.krebs.secret.directory}/initrd/openssh_host_ecdsa_key" ];
   };
   boot.initrd.availableKernelModules = [ "e1000e" ];

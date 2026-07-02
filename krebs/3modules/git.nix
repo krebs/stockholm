@@ -372,9 +372,8 @@ let
       openssh.authorizedKeys.keys =
         unique
           (sort lessThan
-                (map (makeAuthorizedKey git-ssh-command)
-                     (filter (user: isString user.pubkey)
-                             (concatMap (getAttr "user") cfg.rules))));
+                (concatMap (makeAuthorizedKey git-ssh-command)
+                           (concatMap (getAttr "user") cfg.rules)));
     };
     users.groups.${cfg.cgit.fcgiwrap.group.name} = {};
   };
@@ -493,9 +492,8 @@ let
 
   isPublicRepo = getAttr "public"; # TODO this is also in ./cgit.nix
 
-  makeAuthorizedKey = git-ssh-command: user@{ name, pubkey, ... }:
+  makeAuthorizedKey = git-ssh-command: user@{ name, pubkeys, ... }:
     # TODO assert name
-    # TODO assert pubkey
     let
       options = concatStringsSep "," [
         ''command="exec ${git-ssh-command} ${name}"''
@@ -505,7 +503,7 @@ let
         "no-X11-forwarding"
       ];
     in
-    "${options} ${pubkey}";
+    map (pubkey: "${options} ${pubkey}") pubkeys;
 
   # [case-pattern] -> shell-script
   # Create a shell script that succeeds (exit 0) when all its arguments
