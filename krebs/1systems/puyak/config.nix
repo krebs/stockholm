@@ -166,7 +166,7 @@
   '';
 
   users.users.joerg = {
-    openssh.authorizedKeys.keys = [ config.krebs.users.mic92.pubkey ];
+    openssh.authorizedKeys.keys = config.krebs.users.mic92.pubkeys;
     isNormalUser = true;
     shell = "/run/current-system/sw/bin/zsh";
   };
