@@ -27,7 +27,16 @@ let
     systemd = {
       encodeName = replaceStrings ["/"] ["\\x2f"];
     };
-    types = nixpkgs-lib.types // import ./types.nix { lib = stockholm.lib; };
+    types =
+      let
+        # Registry types are maintained in kartei; fetch it via the flake.lock
+        # pin so pure.nix keeps working when imported outside the flake.
+        kartei = builtins.fetchTree
+          (builtins.fromJSON (builtins.readFile ../flake.lock)).nodes.kartei.locked;
+      in
+        nixpkgs-lib.types
+        // import (kartei + "/lib/types.nix") { lib = stockholm.lib; }
+        // import ./types.nix { lib = stockholm.lib; };
     uri = import ./uri.nix { inherit (stockholm) lib; };
     xml = import ./xml.nix { inherit (stockholm) lib; };
 
