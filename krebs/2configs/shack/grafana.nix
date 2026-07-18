@@ -18,12 +18,24 @@ in {
   };
   services.grafana = {
     enable = true;
-    port = port;
-    addr = "0.0.0.0";
-    users.allowSignUp = true;
-    users.allowOrgCreate = true;
-    users.autoAssignOrg = true;
-    auth.anonymous.enable = true;
-    security = import "${config.krebs.secret.directory}/grafana_security.nix";
+    settings = {
+      server = {
+        http_port = port;
+        http_addr = "0.0.0.0";
+      };
+      users = {
+        allow_sign_up = true;
+        allow_org_create = true;
+        auto_assign_org = true;
+      };
+      "auth.anonymous".enabled = true;
+      # Runtime secret: grafana's $__file provider reads the admin credentials
+      # from the secret store at startup, so nothing is read at eval time.
+      security = {
+        admin_user = "$__file{${config.krebs.secret.directory}/grafana/admin_user}";
+        admin_password = "$__file{${config.krebs.secret.directory}/grafana/admin_password}";
+        secret_key = "$__file{${config.krebs.secret.directory}/grafana/secret_key}";
+      };
+    };
   };
 }

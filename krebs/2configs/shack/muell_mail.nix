@@ -1,13 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  pkg = pkgs.callPackage (
-    pkgs.fetchFromGitHub {
-      owner = "shackspace";
-      repo = "muell_mail";
-      rev = "c3e43687879f95e01a82ef176fa15678543b2eb8";
-      sha256 = "0hgchwam5ma96s2v6mx2jfkh833psadmisjbm3k3153rlxp46frx";
-    }) { mkYarnPackage = pkgs.yarn2nix-moretea.mkYarnPackage; };
+  pkg = pkgs.muell_mail;
     home = "/var/lib/muell_mail";
     cfg = "${config.krebs.secret.directory}/shack/muell_mail.js";
 in {

@@ -18,13 +18,11 @@
   ];
   services.samba = {
     enable = true;
-    shares = {
-      share-home = {
-        path = "/home/share/";
-        "read only" = "no";
-        browseable = "yes";
-        "guest ok" = "yes";
-      };
+    settings.share-home = {
+      path = "/home/share/";
+      "read only" = "no";
+      browseable = "yes";
+      "guest ok" = "yes";
     };
     settings.global = {
           "guest account" = "smbguest";
