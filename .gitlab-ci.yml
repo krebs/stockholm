@@ -18,11 +18,9 @@ deployment test:
     - nix
   stage: test
   script:
-    - GIT_SSH_COMMAND="ssh -i ~/.ssh/gitlab_deploy.key" git clone git@ssh.git.shackspace.de:rz/secrets.git ~/brain
-    - test $(PASSWORD_STORE_DIR=~/brain pass smoke) == 1337
-    - git submodule update --init
-    - $(nix-build krebs/krops.nix --no-out-link --argstr name wolf --argstr target /tmp -A test)
-    - $(nix-build krebs/krops.nix --no-out-link --argstr name puyak --argstr target /tmp -A test)
+    # Pure flake build, no secrets required at build time.
+    - nix --extra-experimental-features 'nix-command flakes' build --no-link --print-out-paths '.#nixosConfigurations.wolf.config.system.build.toplevel'
+    - nix --extra-experimental-features 'nix-command flakes' build --no-link --print-out-paths '.#nixosConfigurations.puyak.config.system.build.toplevel'
 nix-shell test:
   stage: test
   tags:
@@ -42,9 +40,10 @@ wolf deployment:
   script:
     - cp ~/.ssh/gitlab_deploy.key ~/.ssh/id_rsa
     - git clone git@ssh.git.shackspace.de:rz/secrets.git ~/brain
-    - git submodule update --init
     - ssh-keyscan -H 'wolf.shack' >> ~/.ssh/known_hosts
-    - $(nix-build krebs/krops.nix --no-out-link --argstr name wolf --argstr target wolf.shack -A deploy)
+    # populate runtime secrets, then build+switch via flake
+    - PASSWORD_STORE_DIR=~/brain nix --extra-experimental-features 'nix-command flakes' run '.#populate-secrets' -- wolf wolf.shack
+    - nixos-rebuild switch --flake '.#wolf' --target-host root@wolf.shack --extra-experimental-features 'nix-command flakes'
   only:
     changes:
       - .gitlab-ci.yml
@@ -59,9 +58,10 @@ puyak deployment:
   script:
     - cp ~/.ssh/gitlab_deploy.key ~/.ssh/id_rsa
     - git clone git@ssh.git.shackspace.de:rz/secrets.git ~/brain
-    - git submodule update --init
     - ssh-keyscan -H 'puyak.shack' >> ~/.ssh/known_hosts
-    - $(nix-build krebs/krops.nix --no-out-link --argstr name puyak --argstr target puyak.shack -A deploy)
+    # populate runtime secrets, then build+switch via flake
+    - PASSWORD_STORE_DIR=~/brain nix --extra-experimental-features 'nix-command flakes' run '.#populate-secrets' -- puyak puyak.shack
+    - nixos-rebuild switch --flake '.#puyak' --target-host root@puyak.shack --extra-experimental-features 'nix-command flakes'
   only:
     changes:
       - .gitlab-ci.yml

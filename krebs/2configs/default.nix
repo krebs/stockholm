@@ -27,7 +27,7 @@ with import ../../lib/pure.nix { inherit lib; };
 
   networking.hostName = config.krebs.build.host.name;
 
-  nix.maxJobs = 1;
+  nix.settings.max-jobs = 1;
   nix.settings.sandbox = true;
 
   environment.systemPackages = with pkgs; [

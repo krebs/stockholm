@@ -1,14 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  pkg = pkgs.callPackage (
-    pkgs.fetchFromGitHub {
-      owner = "shackspace";
-      repo = "muellshack";
-      rev = "dc80cf1edaa3d86ec2bebae8596ad1d4c4e3650a";
-      sha256 = "1yipr66zhrg5m20pf3rzvgvvl78an6ddkq6zc45rxb2r0i7ipkyh";
-
-    }) { mkYarnPackage = pkgs.yarn2nix-moretea.mkYarnPackage; };
+  pkg = pkgs.muellshack;
     home = "/var/lib/muellshack";
     port = "8081";
 in {

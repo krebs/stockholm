@@ -7,7 +7,7 @@
 
   hardware.cpu.intel.updateMicrocode = true;
 
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   services.tlp.enable = true;
 
@@ -16,7 +16,7 @@
     kernelParams = [ "acpi_backlight=none" ];
   };
 
-  hardware.opengl.extraPackages = [
+  hardware.graphics.extraPackages = [
     pkgs.intel-vaapi-driver
     pkgs.libva-vdpau-driver
   ];
