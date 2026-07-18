@@ -27,7 +27,7 @@ with import ../../lib/pure.nix { inherit lib; };
 
   networking.hostName = config.krebs.build.host.name;
 
-  nix.maxJobs = 1;
+  nix.settings.max-jobs = 1;
   nix.settings.sandbox = true;
 
   environment.systemPackages = with pkgs; [
@@ -56,13 +56,12 @@ with import ../../lib/pure.nix { inherit lib; };
   '';
 
   users.mutableUsers = false;
-  users.extraUsers.root.openssh.authorizedKeys.keys = [
-    config.krebs.users.lass.pubkey
-    config.krebs.users.makefu.pubkey
-    config.krebs.users.tv.pubkey
-    config.krebs.users.kmein.pubkey
-    config.krebs.users.mic92.pubkey
-  ];
+  users.extraUsers.root.openssh.authorizedKeys.keys =
+    config.krebs.users.lass.pubkeys
+    ++ config.krebs.users.makefu.pubkeys
+    ++ config.krebs.users.tv.pubkeys
+    ++ config.krebs.users.kmein.pubkeys
+    ++ config.krebs.users.mic92.pubkeys;
 
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "17.03";

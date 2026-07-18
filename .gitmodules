@@ -1,9 +1,6 @@
 [submodule "submodules/nix-writers"]
 	path = submodules/nix-writers
 	url = https://cgit.krebsco.de/nix-writers
-[submodule "submodules/krops"]
-	path = submodules/krops
-	url = https://cgit.krebsco.de/krops
 [submodule "submodules/disko"]
 	path = submodules/disko
 	url = https://github.com/nix-community/disko

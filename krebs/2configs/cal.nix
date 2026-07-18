@@ -38,6 +38,8 @@
 in {
   services.radicale = {
     enable = true;
+    # Pin package to acknowledge the current storage/config format (Radicale 3.x).
+    package = pkgs.radicale;
     rights = {
       krebs = {
         user = ".*";

@@ -18,7 +18,7 @@
     ../../2configs/tor/initrd.nix
 
     ../../2configs/binary-cache/nixos.nix
-    ../../2configs/binary-cache/prism.nix
+    # ../../2configs/binary-cache/prism.nix
 
     ## news host
 
@@ -77,7 +77,9 @@
     ../../2configs/shack/esphome.nix
 
     # connect to git.shackspace.de as group runner for rz
-    ../../2configs/shack/gitlab-runner.nix
+    # Disabled: relies on deprecated GitLab registration tokens (removed in
+    # GitLab >= 17.0). Re-enable after migrating to authentication tokens.
+    # ../../2configs/shack/gitlab-runner.nix
 
     # Statistics collection and visualization
     # ../../2configs/shack/graphite.nix # graphiteApi is broken and unused(hopefully)
@@ -137,6 +139,7 @@
     };
     "/boot" = {
       device = "/dev/sda2";
+      fsType = "vfat";
     };
     "/bku" = {
       device = "/dev/mapper/pool-bku";
@@ -155,8 +158,8 @@
     };
   };
 
-  services.logind.lidSwitch = "ignore";
-  services.logind.lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login.HandleLidSwitch = "ignore";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
 
   environment.systemPackages = [ pkgs.zsh ];
@@ -166,7 +169,7 @@
   '';
 
   users.users.joerg = {
-    openssh.authorizedKeys.keys = [ config.krebs.users.mic92.pubkey ];
+    openssh.authorizedKeys.keys = config.krebs.users.mic92.pubkeys;
     isNormalUser = true;
     shell = "/run/current-system/sw/bin/zsh";
   };

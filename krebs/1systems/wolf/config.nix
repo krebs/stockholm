@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, modulesPath, ... }:
 let
   shack-ip = config.krebs.build.host.nets.shack.ip4.addr;
   ext-if = "et0";
@@ -7,22 +7,24 @@ let
 in
 {
   imports = [
-    <stockholm/krebs>
-    <stockholm/krebs/2configs>
-    <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
+    ../../../krebs
+    ../../../krebs/2configs
+    (modulesPath + "/profiles/qemu-guest.nix")
 
-    <stockholm/krebs/2configs/binary-cache/nixos.nix>
-    <stockholm/krebs/2configs/binary-cache/prism.nix>
+    ../../../krebs/2configs/binary-cache/nixos.nix
+    ../../../krebs/2configs/binary-cache/prism.nix
 
     #### shackspace services
-    <stockholm/krebs/2configs/shack/share.nix> # wolf.shack
+    ../../../krebs/2configs/shack/share.nix # wolf.shack
 
     # gitlab runner
-    <stockholm/krebs/2configs/shack/gitlab-runner.nix>
+    # Disabled: relies on deprecated GitLab registration tokens (removed in
+    # GitLab >= 17.0). Re-enable after migrating to authentication tokens.
+    # ../../../krebs/2configs/shack/gitlab-runner.nix
     # misc
-    <stockholm/krebs/2configs/shack/ssh-keys.nix>
-    <stockholm/krebs/2configs/save-diskspace.nix>
-    <stockholm/krebs/2configs/shack/prometheus/node.nix>
+    ../../../krebs/2configs/shack/ssh-keys.nix
+    ../../../krebs/2configs/save-diskspace.nix
+    ../../../krebs/2configs/shack/prometheus/node.nix
 
   ];
   # use your own binary cache, fallback use cache.nixos.org (which is used by
@@ -60,7 +62,6 @@ in
   boot.extraModulePackages = [ ];
 
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/vda";
 
   # without it `/nix/store` is not added grub paths

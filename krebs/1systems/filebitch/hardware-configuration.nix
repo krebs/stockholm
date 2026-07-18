@@ -1,14 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 let
   byid = dev: "/dev/disk/by-id/" + dev;
   keyFile = byid "usb-SMI_USB_DISK_AA08061700009650-0:0";
 in
 {
   imports =
-    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    [ (modulesPath + "/installer/scan/not-detected.nix")
   ];
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.zfs.devNodes = "/dev"; # fixes some virtualmachine issues
   boot.zfs.forceImportRoot = false;
   boot.zfs.forceImportAll = false;
@@ -16,7 +15,7 @@ in
     "boot.shell_on_fail"
     "panic=30" "boot.panic_on_fail" # reboot the machine upon fatal boot issues
   ];
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
 
 
   boot.initrd.availableKernelModules = [
@@ -72,7 +71,7 @@ in
     [ { device = "/dev/disk/by-uuid/3353c76f-50e4-471d-84bc-ff922d22b271"; }
     ];
 
-    nix.maxJobs = lib.mkDefault 4;
+    nix.settings.max-jobs = lib.mkDefault 4;
   boot.loader.grub.device = byid "ata-INTEL_SSDSA2M080G2GC_CVPO013300WD080BGN";
 
   networking.hostId = "54d97450"; # required for zfs use

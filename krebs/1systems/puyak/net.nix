@@ -14,7 +14,7 @@ in {
     interfaces."${ext-if}".ipv4.addresses = [
       {
         address = shack-ip;
-        prefixLength = 20;
+        prefixLength = 22;
       }
     ];
 
