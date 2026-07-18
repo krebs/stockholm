@@ -83,11 +83,11 @@
     "kartei": {
       "flake": false,
       "locked": {
-        "lastModified": 1783021157,
-        "narHash": "sha256-xuZWc6ZafjcU8Wo1f8XZtUGS9hQP1+BR4eWzH6c9qeE=",
+        "lastModified": 1784280080,
+        "narHash": "sha256-e1wzfp7wqzaDhCCMk+PZElwIFnaqwNqq9jjM1M0wGbo=",
         "owner": "krebs",
         "repo": "kartei",
-        "rev": "8711debcc05b7202be43fc233a93287e14c764e3",
+        "rev": "6c76c9cfcb531258a090c0da72b8f8dafb900d01",
         "type": "github"
       },
       "original": {
