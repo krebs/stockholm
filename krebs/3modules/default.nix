@@ -26,7 +26,7 @@
     ./iana-etc.nix
     ./iptables.nix
     ./kapacitor.nix
-    ./kartei.nix
+    ./kartei
     ./konsens.nix
     ./krebs-pages.nix
     ./krebs.nix

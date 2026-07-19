@@ -7,3 +7,7 @@
 [submodule "submodules/disko"]
 	path = submodules/disko
 	url = https://github.com/nix-community/disko
+[submodule "kartei"]
+	path = kartei
+	url = https://github.com/krebs/kartei.git
+	branch = main
