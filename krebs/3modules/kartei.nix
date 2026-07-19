@@ -1,4 +1,0 @@
-{ kartei, ... }:
-{
-  imports = [ kartei.outPath ];
-}
