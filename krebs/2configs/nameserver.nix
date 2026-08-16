@@ -40,7 +40,7 @@ in {
     keyFiles = [
       "/run/credentials/knot.service/keys.conf"
     ];
-    extraConfig = /* yaml */ ''
+    settingsFile = pkgs.writeText "knot.conf" /* yaml */ ''
       server:
         udp-max-payload: 4096
         listen: [ 127.0.0.53@2, ${

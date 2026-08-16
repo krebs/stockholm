@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let
   domain = "cache.nsupdate.info";
@@ -9,7 +9,8 @@ in {
     enable = true;
     server = "ipv4.nsupdate.info";
     username = domain;
-    password = import "${config.krebs.secret.directory}/nsupdate-cache.nix";
+    # read by ddclient at startup, not at eval time
+    passwordFile = "${config.krebs.secret.directory}/nsupdate-cache";
     domains = [ domain ];
     use= "if, if=et0";
     # use = "web, web=http://ipv4.nsupdate.info/myip";

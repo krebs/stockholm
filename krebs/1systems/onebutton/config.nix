@@ -3,8 +3,8 @@
   # :l <nixpkgs>
   # builtins.readDir (pkgs.fetchFromGitHub { owner = "nixos"; repo = "nixpkgs-channels"; rev = "6c064e6b"; sha256 = "1rqzh475xn43phagrr30lb0fd292c1s8as53irihsnd5wcksnbyd"; })
   imports = [
-    <stockholm/krebs>
-    <stockholm/krebs/2configs>
+    ../../../krebs
+    ../../../krebs/2configs
     { # flag to rebuild everything yourself:
       # environment.noXlibs = true;
 
@@ -13,12 +13,12 @@
       nix.gc.dates = "03:10";
       documentation.man.enable = false;
       documentation.info.enable = false;
-      services.nixosManual.enable = false;
+      documentation.nixos.enable = false;
       services.journald.extraConfig = "SystemMaxUse=50M";
     }
     {
       systemd.services.mpc-booter = let
-        mpc = "${pkgs.mpc_cli}/bin/mpc -h mpd.shack -p 6600";
+        mpc = "${pkgs.mpc}/bin/mpc -h mpd.shack -p 6600";
         url = "http://lassul.us:8000/radio.ogg";
         say = pkgs.writeDash "say" ''
           tmpfile=$(${pkgs.coreutils}/bin/mktemp)
@@ -28,6 +28,7 @@
         '';
       in {
         wantedBy = [ "multi-user.target" ];
+        wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
         serviceConfig = {
           RemainAfterExit = "yes";
@@ -54,10 +55,10 @@
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_rpi;
+  boot.kernelPackages = pkgs.linuxPackages_rpi1;
 
-  nix.binaryCaches = [ "http://nixos-arm.dezgeg.me/channel" ];
-  nix.binaryCachePublicKeys = [ "nixos-arm.dezgeg.me-1:xBaUKS3n17BZPKeyxL4JfbTqECsT+ysbDJz29kLFRW0=%" ];
+  nix.settings.substituters = [ "http://nixos-arm.dezgeg.me/channel" ];
+  nix.settings.trusted-public-keys = [ "nixos-arm.dezgeg.me-1:xBaUKS3n17BZPKeyxL4JfbTqECsT+ysbDJz29kLFRW0=%" ];
 
   fileSystems = {
     "/boot" = {

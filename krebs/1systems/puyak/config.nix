@@ -137,6 +137,7 @@
     };
     "/boot" = {
       device = "/dev/sda2";
+      fsType = "vfat";
     };
     "/bku" = {
       device = "/dev/mapper/pool-bku";
@@ -155,8 +156,8 @@
     };
   };
 
-  services.logind.lidSwitch = "ignore";
-  services.logind.lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login.HandleLidSwitch = "ignore";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
 
   environment.systemPackages = [ pkgs.zsh ];

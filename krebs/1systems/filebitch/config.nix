@@ -18,6 +18,7 @@ in
     {
       fileSystems."/home/share" =
         { device = "/serve";
+          fsType = "none";
           options = [ "bind" "nofail" ];
         };
     }

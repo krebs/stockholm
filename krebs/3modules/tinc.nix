@@ -239,7 +239,7 @@ in with slib; {
         '';
         ExecStart = "+" + pkgs.writers.writeDash "tinc-${netname}" ''
           set -efu
-          exec ${cfg.tincPackage}/sbin/tincd \
+          exec ${lib.getExe' cfg.tincPackage "tincd"} \
               -D \
               -U ${cfg.username} \
               -d 0 \

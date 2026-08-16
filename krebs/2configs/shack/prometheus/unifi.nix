@@ -1,10 +1,11 @@
-{lib, ... }:
+{ config, ... }:
 {
+  # environment file holds UNIFI_PASSWORD=...; read at startup, not at eval time
   services.prometheus.exporters.unifi = {
     enable = true;
     unifiAddress = "https://unifi.shack:8443/";
     unifiInsecure = true;
     unifiUsername = "prometheus"; # needed manual login after setup to confirm the password
-    unifiPassword = lib.replaceStrings ["\n"] [""] (builtins.readFile "${config.krebs.secret.directory}/shack/unifi-prometheus-pw");
+    environmentFile = "${config.krebs.secret.directory}/shack/unifi-prometheus-env";
   };
 }

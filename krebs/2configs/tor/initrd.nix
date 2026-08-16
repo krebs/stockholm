@@ -1,7 +1,11 @@
-{config, pkgs, ... }:
+{config, pkgs, lib, ... }:
 ## unlock command:
 # (brain hosts/puyak/luks-ssd;echo)  | ssh root@$(brain krebs-secrets/puyak/initrd/hostname) 'cat > /crypt-ramfs/passphrase'
 {
+  # extraUtilsCommands and network.postCommands below are scripted stage-1 only,
+  # which nixpkgs no longer defaults to and drops in 26.11.
+  boot.initrd.systemd.enable = lib.mkForce false;
+
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
     enable = true;

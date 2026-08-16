@@ -68,6 +68,20 @@
     target = "root@${target}/var/src";
   };
 
+  # Copy only the secrets, for hosts that are built with nixos-rebuild --flake
+  # and thus need nothing else in /var/src. Wrapped by the flake's
+  # populate-secrets app; see krebs/1systems/README.md.
+  populate-secrets = pkgs.populate {
+    force = true;
+    source = lib.evalSource [{
+      secrets.pass = {
+        dir = "${lib.getEnv "HOME"}/brain";
+        name = "krebs-secrets/${name}";
+      };
+    }];
+    target = lib.mkTarget "root@${target}/var/src";
+  };
+
   # usage: $(nix-build --no-out-link --argstr name HOSTNAME --argstr target PATH -A populate)
   populate = { target, force ? false }: pkgs.populate {
     inherit force;
