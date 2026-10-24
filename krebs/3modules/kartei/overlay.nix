@@ -470,6 +470,10 @@
       external = true;
       monitoring = true;
     };
+    probe = {
+      external = true;
+      nets.retiolum.via = "internet";
+    };
     ponte = {
       extraZones."krebsco.de" = ''
         @ IN A 141.147.36.79
