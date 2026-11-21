@@ -196,9 +196,6 @@
     ful = {
       external = true;
     };
-    g7power = {
-      external = true;
-    };
     graham = {
       external = true;
       nets.retiolum.via = "internet";
@@ -337,16 +334,10 @@
     justraute = {
       external = true;
     };
-    kabsa = {
-      external = true;
-    };
     keller = {
       external = true;
     };
     kfbox = {
-      external = true;
-    };
-    kibbeh = {
       external = true;
     };
     lasspi = {
@@ -610,12 +601,6 @@
       external = true;
       monitoring = true;
     };
-    tabula = {
-      external = true;
-    };
-    tahina = {
-      external = true;
-    };
     tantulocarida = {
       external = true;
     };
@@ -697,9 +682,6 @@
     yellow = {
       consul = true;
       monitoring = true;
-    };
-    zaatar = {
-      external = true;
     };
     zoppo = {
       secure = true;
